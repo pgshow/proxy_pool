@@ -6,6 +6,8 @@ import (
 	"github.com/antchfx/htmlquery"
 	"github.com/apex/log"
 	"github.com/avast/retry-go"
+	"github.com/ego008/gophantomjs"
+	"github.com/gocolly/colly"
 	"github.com/parnurzeal/gorequest"
 	"github.com/phpgao/proxy_pool/db"
 	"github.com/phpgao/proxy_pool/model"
@@ -172,13 +174,40 @@ func getProxy(s Crawler) {
 						return MaxProxyReachedErr
 					}
 
-					var withProxy bool
+					//var withProxy bool
+					//
+					//if attempts > 1 {
+					//	withProxy = true
+					//}
 
-					if attempts > 1 {
-						withProxy = true
+					//resp, err := s.Fetch(proxySiteURL, withProxy)
+					//if err != nil {
+					//	return err
+					//}
+
+					// Start the process once.
+					p := phantomjs.DefaultProcess
+					if err := p.Open(); err != nil {
+						logger.WithError(err).WithField("url", proxySiteURL).Debug("can't start a phantomjs process")
 					}
+					defer phantomjs.DefaultProcess.Close()
 
-					resp, err := s.Fetch(proxySiteURL, withProxy)
+					// Do other stuff in your program.
+
+					// Create a web page.
+					// IMPORTANT: Always make sure you close your pages!
+					page, err := p.CreateWebPage()
+					if err != nil {
+						logger.WithError(err).WithField("url", proxySiteURL).Debug("can't create a web page")
+					}
+					defer page.Close()
+
+					if err := page.Open(proxySiteURL); err != nil {
+						logger.WithError(err).WithField("url", proxySiteURL).Debug("can't access the website")
+					}
+					fmt.Printf(page.Content())
+
+					resp, err := page.Content()
 					if err != nil {
 						return err
 					}
@@ -239,4 +268,31 @@ func getProxy(s Crawler) {
 		}(url, s.GetProxyChan())
 	}
 
+}
+
+// 使用 Colly 爬取目标页面
+func (s *Spider) CollyFetch(proxyURL string, useProxy bool) (body string, err error) {
+
+	if s.RandomDelay() {
+		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+	}
+
+	c := colly.NewCollector()
+
+	c.OnRequest(func(r *colly.Request) {
+		r.Headers.Set("User-Agent", util.GetRandomUA())
+		r.Headers.Set("Referer", s.GetReferer()) //关键头 如果没有 一些网站返回 错误
+	})
+
+	c.OnResponse(func(resp *colly.Response) {
+		body = string(resp.Body)
+	})
+
+	c.OnError(func(resp *colly.Response, errHttp error) {
+		err = errHttp
+	})
+
+	err = c.Visit(proxyURL)
+
+	return
 }
