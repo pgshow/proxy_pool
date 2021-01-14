@@ -18,6 +18,10 @@ func (s *ihuan) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *ihuan) Cron() string {
 	return "@every 30m"
 }

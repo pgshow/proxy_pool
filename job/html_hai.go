@@ -10,10 +10,6 @@ type IpHai struct {
 	Spider
 }
 
-func (s *IpHai) Cron() string {
-	return "@every 2m"
-}
-
 func (s *IpHai) StartUrl() []string {
 	return []string{
 		"http://www.iphai.com/free/ng",
@@ -21,6 +17,14 @@ func (s *IpHai) StartUrl() []string {
 		"http://www.iphai.com/free/wg",
 		"http://www.iphai.com/free/wp",
 	}
+}
+
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
+func (s *IpHai) Cron() string {
+	return "@every 2m"
 }
 
 func (s *IpHai) GetReferer() string {

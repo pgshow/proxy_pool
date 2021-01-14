@@ -16,6 +16,10 @@ func (s *gatherproxy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *gatherproxy) Cron() string {
 	return "@every 30m"
 }

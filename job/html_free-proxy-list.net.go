@@ -6,41 +6,45 @@ import (
 	"strings"
 )
 
-type freeProxyListsNet struct {
+type freeProxyListNet struct {
 	Spider
 }
 
-func (s *freeProxyListsNet) StartUrl() []string {
+func (s *freeProxyListNet) StartUrl() []string {
 	return []string{
-		"http://www.freeproxylist.net/",
+		"https://free-proxy-list.net/",
 	}
 }
 
-func (s *freeProxyListsNet) Cron() string {
-	return "@every 30m"
+func (s *freeProxyListNet) Protocol() string {
+	return "POST"
 }
 
-func (s *freeProxyListsNet) GetReferer() string {
-	return "http://www.freeproxylist.net/"
+func (s *freeProxyListNet) Cron() string {
+	return "@every 10m"
 }
 
-func (s *freeProxyListsNet) Run() {
+func (s *freeProxyListNet) GetReferer() string {
+	return "https://free-proxy-list.net/"
+}
+
+func (s *freeProxyListNet) Run() {
 	getProxy(s)
 }
 
-func (s *freeProxyListsNet) Name() string {
+func (s *freeProxyListNet) Name() string {
 	return "freeProxyListNet"
 }
 
-func (s *freeProxyListsNet) Parse(body string) (proxies []*model.HttpProxy, err error) {
+func (s *freeProxyListNet) Parse(body string) (proxies []*model.HttpProxy, err error) {
 	doc, err := htmlquery.Parse(strings.NewReader(body))
 	if err != nil {
 		return
 	}
 
-	list := htmlquery.Find(doc, "//table[@class='DataGrid']/tbody/tr[position()>1]")
+	list := htmlquery.Find(doc, "//table[@class='table table-striped table-bordered']/tbody/tr")
 	for _, n := range list {
-		ipTmp := htmlquery.FindOne(n, "//a")
+		ipTmp := htmlquery.FindOne(n, "//td[1]")
 		portTmp := htmlquery.FindOne(n, "//td[2]")
 
 		if ipTmp == nil || portTmp == nil {

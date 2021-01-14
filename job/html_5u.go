@@ -12,8 +12,12 @@ type data5u struct {
 
 func (s *data5u) StartUrl() []string {
 	return []string{
-		"http://www.freeproxylists.com/",
+		"http://www.freeProxyListNet.com/",
 	}
+}
+
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
 }
 
 func (s *data5u) Cron() string {
@@ -21,7 +25,7 @@ func (s *data5u) Cron() string {
 }
 
 func (s *data5u) GetReferer() string {
-	return "http://free-proxy.freeproxylists/zh/proxylist/country/CN/all/ping/all"
+	return "http://free-proxy.freeProxyListNet/zh/proxylist/country/CN/all/ping/all"
 }
 
 func (s *data5u) Run() {
@@ -29,7 +33,7 @@ func (s *data5u) Run() {
 }
 
 func (s *data5u) Name() string {
-	return "freeproxylists"
+	return "freeProxyListNet"
 }
 
 func (s *data5u) Parse(body string) (proxies []*model.HttpProxy, err error) {

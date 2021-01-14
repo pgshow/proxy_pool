@@ -10,19 +10,23 @@ type xici struct {
 	Spider
 }
 
+func (s *xici) StartUrl() []string {
+	return []string{
+		"http://www.xicidaili.com/nn",
+		"http://www.xicidaili.com/wn",
+	}
+}
+
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *xici) Cron() string {
 	return "@every 2m"
 }
 
 func (s *xici) GetReferer() string {
 	return "https://www.xicidaili.com/"
-}
-
-func (s *xici) StartUrl() []string {
-	return []string{
-		"http://www.xicidaili.com/nn",
-		"http://www.xicidaili.com/wn",
-	}
 }
 
 func (s *xici) Run() {

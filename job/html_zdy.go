@@ -62,6 +62,10 @@ func (s *zdy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *zdy) Enabled() bool {
 	return util.ServerConf.ChromeWS != ""
 }

@@ -13,6 +13,10 @@ func (s *goubanjia) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *goubanjia) GetReferer() string {
 	return "http://www.goubanjiaproxy.com/"
 }

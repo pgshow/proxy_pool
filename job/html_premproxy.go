@@ -19,6 +19,10 @@ func (s *premProxy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *premProxy) GetReferer() string {
 	return "http://premproxy.com/"
 }

@@ -13,6 +13,10 @@ func (s *clarketm) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *clarketm) GetReferer() string {
 	return "http://github.com/"
 }

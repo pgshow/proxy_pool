@@ -11,6 +11,10 @@ func (s *ab57) StartUrl() []string {
 	}
 }
 
+func (s *ab57) Protocol() string {
+	return "GET"
+}
+
 func (s *ab57) GetReferer() string {
 	return "http://ab57.ru/"
 }

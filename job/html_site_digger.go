@@ -18,6 +18,10 @@ func (s *siteDigger) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *siteDigger) Cron() string {
 	return "1 * * * *"
 }

@@ -16,6 +16,10 @@ func (s *cn_proxy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *cn_proxy) Cron() string {
 	return "@every 30m"
 }

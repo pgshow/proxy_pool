@@ -20,6 +20,10 @@ func (s *ultraProxies) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *ultraProxies) Cron() string {
 	return "@every 1h"
 }

@@ -12,6 +12,10 @@ func (s *rudnkh) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *rudnkh) GetReferer() string {
 	return "https://proxy.rudnkh.me/"
 }

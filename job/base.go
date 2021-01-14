@@ -1,18 +1,21 @@
 package job
 
 import (
+	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/antchfx/htmlquery"
 	"github.com/apex/log"
 	"github.com/avast/retry-go"
-	"github.com/gocolly/colly"
 	"github.com/parnurzeal/gorequest"
 	"github.com/phpgao/proxy_pool/db"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
 	"github.com/phpgao/proxy_pool/validator"
+	"io/ioutil"
 	"math/rand"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -30,6 +33,7 @@ func init() {
 type Crawler interface {
 	Run()
 	StartUrl() []string
+	Protocol() string
 	Cron() string
 	Name() string
 	Retry() uint
@@ -37,7 +41,7 @@ type Crawler interface {
 	Enabled() bool
 	// url , if use proxy
 	Fetch(string, bool) (string, error)
-	CollyFetch(string) (string, error) // 使用 Colly 打开并渲染网页
+	SplashFetch(string) (string, error) // 使用 Colly 打开并渲染网页
 	SetProxyChan(chan<- *model.HttpProxy)
 	GetProxyChan() chan<- *model.HttpProxy
 	Parse(string) ([]*model.HttpProxy, error)
@@ -174,18 +178,18 @@ func getProxy(s Crawler) {
 						return MaxProxyReachedErr
 					}
 
-					//var withProxy bool
-					//
-					//if attempts > 1 {
-					//	withProxy = true
-					//}
+					var withProxy bool
+
+					if attempts > 1 {
+						withProxy = true
+					}
 
 					//resp, err := s.Fetch(proxySiteURL, withProxy)
 					//if err != nil {
 					//	return err
 					//}
 
-					//// Start the process once.
+					// Start the process once.
 					//p := phantomjs.DefaultProcess
 					//if err := p.Open(); err != nil {
 					//	logger.WithError(err).WithField("url", proxySiteURL).Debug("can't start a phantomjs process")
@@ -208,7 +212,7 @@ func getProxy(s Crawler) {
 					//fmt.Printf(page.Content())
 					//
 					//resp, err := page.Content()
-					resp, err := s.CollyFetch(proxySiteURL)
+					resp, err := s.Fetch(proxySiteURL, withProxy)
 					if err != nil {
 						return err
 					}
@@ -271,32 +275,49 @@ func getProxy(s Crawler) {
 
 }
 
-// 使用 Colly 爬取目标页面
-func (s *Spider) CollyFetch(proxyURL string) (body string, err error) {
+// 使用 Splash 爬取目标页面
+func (s *Spider) SplashFetch(proxyURL string) (body string, err error) {
 
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 	}
 
-	c := colly.NewCollector()
+	// 设置 Splash 参数
+	type Post struct {
+		Url     string            `json:"url"`
+		Html    string            `json:"html"`
+		Images  string            `json:"images"`
+		Headers map[string]string `json:"headers"`
+	}
 
-	c.OnRequest(func(r *colly.Request) {
-		r.Headers.Set("User-Agent", util.GetRandomUA())
-		r.Headers.Set("Referer", s.GetReferer()) //关键头 如果没有 一些网站返回 错误
-	})
+	values := &Post{
+		proxyURL,
+		"1",
+		"0",
+		map[string]string{"User-Agent": util.GetRandomUA()},
+	}
 
-	//c.OnScraped(func(resp *colly.Response) {
-	//	body = string(resp.Body)
-	//})
-	c.OnHTML("html", func(e *colly.HTMLElement) {
-		body = string(e.Response.Body)
-	})
+	jsonValue, _ := json.Marshal(values)
 
-	c.OnError(func(resp *colly.Response, errHttp error) {
-		err = errHttp
-	})
+	resp, err1 := http.Post("http://localhost:8050/render.html", "application/json", bytes.NewBuffer(jsonValue))
 
-	err = c.Visit(proxyURL)
+	err = err1
+
+	if err1 != nil {
+		return
+	}
+
+	bodyByte, err2 := ioutil.ReadAll(resp.Body)
+
+	err = err2
+
+	defer resp.Body.Close()
+
+	if err2 != nil {
+		return
+	}
+
+	body = string(bodyByte)
 
 	return
 }

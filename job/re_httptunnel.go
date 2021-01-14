@@ -13,6 +13,10 @@ func (s *httptunnel) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *httptunnel) GetReferer() string {
 	return "http://www.httptunnel.ge/"
 }

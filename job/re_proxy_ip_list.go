@@ -13,6 +13,10 @@ func (s *proxyIpList) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *proxyIpList) GetReferer() string {
 	return "https://www.my-proxy.com/"
 }

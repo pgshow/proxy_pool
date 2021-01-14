@@ -10,14 +10,18 @@ type proxylistplus struct {
 	Spider
 }
 
-func (s *proxylistplus) Cron() string {
-	return "@every 5m"
-}
-
 func (s *proxylistplus) StartUrl() []string {
 	return []string{
 		"https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1",
 	}
+}
+
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
+func (s *proxylistplus) Cron() string {
+	return "@every 5m"
 }
 
 func (s *proxylistplus) GetReferer() string {

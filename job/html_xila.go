@@ -21,6 +21,10 @@ func (s *xiladaili) StartUrl() []string {
 	return u
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *xiladaili) Cron() string {
 	return "@every 2m"
 }

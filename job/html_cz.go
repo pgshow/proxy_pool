@@ -20,6 +20,10 @@ func (s *cz) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *cz) Cron() string {
 	return "@every 30m"
 }

@@ -39,6 +39,10 @@ func (s *ip89) StartUrl() []string {
 	return t
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *ip89) GetReferer() string {
 	return "http://www.89ip.cn/"
 }

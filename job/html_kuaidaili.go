@@ -17,6 +17,10 @@ func (s *kuaiProxy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *kuaiProxy) Cron() string {
 	return "@every 5m"
 }

@@ -10,18 +10,22 @@ type usProxy struct {
 	Spider
 }
 
+func (s *usProxy) StartUrl() []string {
+	return []string{
+		"https://www.us-proxy.org/",
+	}
+}
+
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *usProxy) Cron() string {
 	return "@every 2m"
 }
 
 func (s *usProxy) GetReferer() string {
 	return "https://www.us-proxy.org/"
-}
-
-func (s *usProxy) StartUrl() []string {
-	return []string{
-		"https://www.us-proxy.org/",
-	}
 }
 
 func (s *usProxy) Run() {

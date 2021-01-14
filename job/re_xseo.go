@@ -13,6 +13,10 @@ func (s *xseo) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *xseo) GetReferer() string {
 	return "http://xseo.in"
 }

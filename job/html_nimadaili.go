@@ -21,6 +21,10 @@ func (s *nimadaili) StartUrl() []string {
 	return u
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *nimadaili) Cron() string {
 	return "@every 2m"
 }

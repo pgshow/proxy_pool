@@ -26,6 +26,10 @@ func (s *spys) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *spys) Cron() string {
 	return "@every 5m"
 }

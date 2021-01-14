@@ -18,7 +18,7 @@ func TestGetSpiders(t *testing.T) {
 	//for _, c := range ListOfSpider {
 	//	testSpiderFetch(c)
 	//}
-	testSpider := &freeproxylists{}
+	testSpider := &freeProxyListNet{}
 	testSpiderFetch(testSpider)
 }
 
@@ -26,7 +26,7 @@ func testSpiderFetch(c Crawler) {
 	newProxyChan := make(chan *model.HttpProxy, 100)
 	c.SetProxyChan(newProxyChan)
 	c.Run()
-	timeout := time.After(60 * time.Second)
+	timeout := time.After(300 * time.Second)
 	for {
 		select {
 		case proxy := <-newProxyChan:
@@ -1806,6 +1806,8 @@ dp.SyntaxHighlighter.HighlightAll('code');
 	list := htmlquery.Find(doc, "//*[@id='proxies_table']/tbody/tr[position()>2]")
 
 	for _, n := range list {
+		fmt.Println(htmlquery.OutputHTML(n, false)) //打印字符串
+
 		ip := htmlquery.InnerText(htmlquery.FindOne(n, "//td[2]"))
 		port := htmlquery.InnerText(htmlquery.FindOne(n, "//td[3]"))
 

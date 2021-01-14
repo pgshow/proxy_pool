@@ -16,6 +16,10 @@ func (s *freeip) StartUrl() []string {
 	return u
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *freeip) GetReferer() string {
 	return "https://www.freeip.top/"
 }

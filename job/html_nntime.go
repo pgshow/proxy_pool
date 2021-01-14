@@ -16,6 +16,10 @@ func (s *nntime) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *nntime) GetReferer() string {
 	return "http://nntime.com/"
 }

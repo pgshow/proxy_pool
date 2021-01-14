@@ -21,6 +21,10 @@ func (s *proxyDb) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *proxyDb) Cron() string {
 	return "@every 1h"
 }

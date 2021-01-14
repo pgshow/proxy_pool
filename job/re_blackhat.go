@@ -13,6 +13,10 @@ func (s *blackHat) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *blackHat) GetReferer() string {
 	return "http://www.blackhat.be/cpt/proxy.lst"
 }

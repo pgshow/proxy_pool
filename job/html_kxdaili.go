@@ -17,6 +17,10 @@ func (s *kxdaili) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *kxdaili) Cron() string {
 	return "@every 30m"
 }

@@ -15,6 +15,10 @@ func (s *cn66) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *cn66) GetReferer() string {
 	return "http://www.66ip.cn/"
 }

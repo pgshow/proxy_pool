@@ -12,6 +12,10 @@ func (s *feiyi) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *feiyi) GetReferer() string {
 	return "http://www.feiyiproxy.com/"
 }

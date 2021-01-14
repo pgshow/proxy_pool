@@ -13,6 +13,10 @@ func (s *dogdev) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *dogdev) GetReferer() string {
 	return "http://dogdev.net/"
 }

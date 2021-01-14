@@ -42,13 +42,12 @@ func (s *freeProxyCz) Parse(body string) (proxies []*model.HttpProxy, err error)
 	list := htmlquery.Find(doc, "//table[@id='proxy_list']/tbody/tr")
 	for _, n := range list {
 
-		// 过滤 Socks 协议
-		protocol := htmlquery.InnerText(htmlquery.FindOne(n, "//td[3]"))
-		if strings.Contains(protocol, "SOCKS") {
-			return
+		// 丢弃 Socks 协议
+		if strings.Contains(htmlquery.OutputHTML(n, false), "SOCKS") {
+			continue
 		}
 
-		ip := util.FindIp(htmlquery.InnerText(htmlquery.FindOne(n, "//td[1]")))
+		ip := util.FindIp(htmlquery.OutputHTML(n, false))
 		port := htmlquery.InnerText(htmlquery.FindOne(n, "//td[2]"))
 
 		ip = strings.TrimSpace(ip)

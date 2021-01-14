@@ -26,6 +26,10 @@ func (s *aliveProxy) StartUrl() []string {
 	}
 }
 
+func (s *proxyListsLine) Protocol() string {
+	return "GET"
+}
+
 func (s *aliveProxy) GetReferer() string {
 	return "http://aliveproxy.com"
 }
