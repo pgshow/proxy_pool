@@ -6,33 +6,37 @@ import (
 	"strings"
 )
 
-type freeProxyListsNet struct {
+type freeProxyLists struct {
 	Spider
 }
 
-func (s *freeProxyListsNet) StartUrl() []string {
+func (s *freeProxyLists) StartUrl() []string {
 	return []string{
 		"http://www.freeproxylist.net/",
 	}
 }
 
-func (s *freeProxyListsNet) Cron() string {
+func (s *freeProxyLists) Protocol() string {
+	return "RenderFetch"
+}
+
+func (s *freeProxyLists) Cron() string {
 	return "@every 30m"
 }
 
-func (s *freeProxyListsNet) GetReferer() string {
+func (s *freeProxyLists) GetReferer() string {
 	return "http://www.freeproxylist.net/"
 }
 
-func (s *freeProxyListsNet) Run() {
+func (s *freeProxyLists) Run() {
 	getProxy(s)
 }
 
-func (s *freeProxyListsNet) Name() string {
-	return "freeProxyListNet"
+func (s *freeProxyLists) Name() string {
+	return "freeProxyList"
 }
 
-func (s *freeProxyListsNet) Parse(body string) (proxies []*model.HttpProxy, err error) {
+func (s *freeProxyLists) Parse(body string) (proxies []*model.HttpProxy, err error) {
 	doc, err := htmlquery.Parse(strings.NewReader(body))
 	if err != nil {
 		return

@@ -16,7 +16,7 @@ func (s *nntime) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *nntime) Protocol() string {
 	return "GET"
 }
 

@@ -16,7 +16,7 @@ func (s *data5u) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *data5u) Protocol() string {
 	return "GET"
 }
 

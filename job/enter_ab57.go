@@ -12,7 +12,7 @@ func (s *ab57) StartUrl() []string {
 }
 
 func (s *ab57) Protocol() string {
-	return "GET"
+	return "Fetch"
 }
 
 func (s *ab57) GetReferer() string {
@@ -24,7 +24,7 @@ type ab57 struct {
 }
 
 func (s *ab57) Cron() string {
-	return "@every 2m"
+	return "@every 10m"
 }
 
 func (s *ab57) Name() string {

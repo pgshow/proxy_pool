@@ -17,7 +17,7 @@ func (s *kxdaili) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *kxdaili) Protocol() string {
 	return "GET"
 }
 

@@ -11,12 +11,11 @@ type pubProxy struct {
 
 func (s *pubProxy) StartUrl() []string {
 	return []string{
-		"http://pubproxy.com/api/proxy?limit=5&format=txt&type=http&level=anonymous&last_check=60&no_country=CN",
-		"http://pubproxy.com/api/proxy?limit=5&format=txt&type=http&level=anonymous&last_check=60&country=CN",
+		"http://pubproxy.com/api/proxy?limit=5&format=txt&type=http&level=anonymous&last_check=60",
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *pubProxy) Protocol() string {
 	return "GET"
 }
 

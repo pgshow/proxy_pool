@@ -20,7 +20,7 @@ func (s *ultraProxies) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *ultraProxies) Protocol() string {
 	return "GET"
 }
 

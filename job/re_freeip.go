@@ -16,7 +16,7 @@ func (s *freeip) StartUrl() []string {
 	return u
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *freeip) Protocol() string {
 	return "GET"
 }
 

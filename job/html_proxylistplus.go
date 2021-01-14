@@ -16,7 +16,7 @@ func (s *proxylistplus) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *proxylistplus) Protocol() string {
 	return "GET"
 }
 

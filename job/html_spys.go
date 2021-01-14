@@ -26,7 +26,7 @@ func (s *spys) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *spys) Protocol() string {
 	return "GET"
 }
 

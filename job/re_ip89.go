@@ -39,7 +39,7 @@ func (s *ip89) StartUrl() []string {
 	return t
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *ip89) Protocol() string {
 	return "GET"
 }
 

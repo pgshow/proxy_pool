@@ -19,7 +19,7 @@ func (s *premProxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *premProxy) Protocol() string {
 	return "GET"
 }
 

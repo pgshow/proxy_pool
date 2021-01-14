@@ -19,6 +19,10 @@ func (s *coolProxy) StartUrl() []string {
 	}
 }
 
+func (s *coolProxy) Protocol() string {
+	return "GET"
+}
+
 func (s *coolProxy) GetReferer() string {
 	return "https://cool-proxy.net"
 }

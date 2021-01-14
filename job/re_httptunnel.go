@@ -13,7 +13,7 @@ func (s *httptunnel) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *httptunnel) Protocol() string {
 	return "GET"
 }
 

@@ -62,7 +62,7 @@ func (s *zdy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *zdy) Protocol() string {
 	return "GET"
 }
 

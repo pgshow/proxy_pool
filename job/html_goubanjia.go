@@ -13,7 +13,7 @@ func (s *goubanjia) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *goubanjia) Protocol() string {
 	return "GET"
 }
 

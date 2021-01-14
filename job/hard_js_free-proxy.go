@@ -17,6 +17,10 @@ func (s *freeProxyCz) StartUrl() []string {
 	}
 }
 
+func (s *freeProxyCz) Protocol() string {
+	return "Fetch"
+}
+
 func (s *freeProxyCz) Cron() string {
 	return "@every 30m"
 }
@@ -48,7 +52,7 @@ func (s *freeProxyCz) Parse(body string) (proxies []*model.HttpProxy, err error)
 		}
 
 		ip := util.FindIp(htmlquery.OutputHTML(n, false))
-		port := htmlquery.InnerText(htmlquery.FindOne(n, "//td[2]"))
+		port := htmlquery.InnerText(htmlquery.FindOne(n, "//span[@class='fport']"))
 
 		ip = strings.TrimSpace(ip)
 		port = strings.TrimSpace(port)

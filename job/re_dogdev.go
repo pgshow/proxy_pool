@@ -13,7 +13,7 @@ func (s *dogdev) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *dogdev) Protocol() string {
 	return "GET"
 }
 

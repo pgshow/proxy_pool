@@ -16,7 +16,7 @@ func (s *usProxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *usProxy) Protocol() string {
 	return "GET"
 }
 

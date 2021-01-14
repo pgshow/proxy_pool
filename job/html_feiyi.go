@@ -12,7 +12,7 @@ func (s *feiyi) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *feiyi) Protocol() string {
 	return "GET"
 }
 

@@ -13,7 +13,7 @@ func (s *clarketm) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *clarketm) Protocol() string {
 	return "GET"
 }
 

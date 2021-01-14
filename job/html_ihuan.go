@@ -18,7 +18,7 @@ func (s *ihuan) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *ihuan) Protocol() string {
 	return "GET"
 }
 

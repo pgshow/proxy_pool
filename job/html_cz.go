@@ -20,7 +20,7 @@ func (s *cz) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *cz) Protocol() string {
 	return "GET"
 }
 

@@ -16,7 +16,7 @@ func (s *cn_proxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *cn_proxy) Protocol() string {
 	return "GET"
 }
 

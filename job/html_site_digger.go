@@ -18,7 +18,7 @@ func (s *siteDigger) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *siteDigger) Protocol() string {
 	return "GET"
 }
 

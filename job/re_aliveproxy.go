@@ -26,7 +26,7 @@ func (s *aliveProxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *aliveProxy) Protocol() string {
 	return "GET"
 }
 

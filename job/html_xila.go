@@ -21,7 +21,7 @@ func (s *xiladaili) StartUrl() []string {
 	return u
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *xiladaili) Protocol() string {
 	return "GET"
 }
 

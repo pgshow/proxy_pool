@@ -41,7 +41,7 @@ type Crawler interface {
 	Enabled() bool
 	// url , if use proxy
 	Fetch(string, bool) (string, error)
-	SplashFetch(string) (string, error) // 使用 Colly 打开并渲染网页
+	SplashFetch(string) (string, error) // 使用 Splash 打开并渲染网页
 	SetProxyChan(chan<- *model.HttpProxy)
 	GetProxyChan() chan<- *model.HttpProxy
 	Parse(string) ([]*model.HttpProxy, error)
@@ -184,35 +184,16 @@ func getProxy(s Crawler) {
 						withProxy = true
 					}
 
-					//resp, err := s.Fetch(proxySiteURL, withProxy)
-					//if err != nil {
-					//	return err
-					//}
+					var resp string
 
-					// Start the process once.
-					//p := phantomjs.DefaultProcess
-					//if err := p.Open(); err != nil {
-					//	logger.WithError(err).WithField("url", proxySiteURL).Debug("can't start a phantomjs process")
-					//}
-					//defer phantomjs.DefaultProcess.Close()
-					//
-					//// Do other stuff in your program.
-					//
-					//// Create a web page.
-					//// IMPORTANT: Always make sure you close your pages!
-					//page, err := p.CreateWebPage()
-					//if err != nil {
-					//	logger.WithError(err).WithField("url", proxySiteURL).Debug("can't create a web page")
-					//}
-					//defer page.Close()
-					//
-					//if err := page.Open(proxySiteURL); err != nil {
-					//	logger.WithError(err).WithField("url", proxySiteURL).Debug("can't access the website")
-					//}
-					//fmt.Printf(page.Content())
-					//
-					//resp, err := page.Content()
-					resp, err := s.Fetch(proxySiteURL, withProxy)
+					if s.Protocol() == "RenderFetch" {
+						// 需要 浏览器渲染 的网站
+						resp, err = s.SplashFetch(proxySiteURL)
+					} else {
+						// go.http 就能爬取的网站
+						resp, err = s.Fetch(proxySiteURL, withProxy)
+					}
+
 					if err != nil {
 						return err
 					}

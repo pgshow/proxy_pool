@@ -12,7 +12,7 @@ func (s *rudnkh) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *rudnkh) Protocol() string {
 	return "GET"
 }
 

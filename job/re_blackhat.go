@@ -13,7 +13,7 @@ func (s *blackHat) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *blackHat) Protocol() string {
 	return "GET"
 }
 
@@ -42,8 +42,8 @@ func (s *blackHat) Parse(body string) (proxies []*model.HttpProxy, err error) {
 	rs := reg.FindAllString(body, -1)
 
 	for _, proxy := range rs {
-		if strings.Contains(proxy, ":") {
-			proxyInfo := strings.Split(proxy, ":")
+		if strings.Contains(proxy, " ") {
+			proxyInfo := strings.Split(proxy, " ")
 
 			proxies = append(proxies, &model.HttpProxy{
 				Ip:   proxyInfo[0],

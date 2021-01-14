@@ -13,7 +13,7 @@ func (s *xseo) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *xseo) Protocol() string {
 	return "GET"
 }
 

@@ -17,7 +17,7 @@ func (s *kuaiProxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *kuaiProxy) Protocol() string {
 	return "GET"
 }
 

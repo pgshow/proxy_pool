@@ -13,7 +13,7 @@ func (s *newProxy) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *newProxy) Protocol() string {
 	return "GET"
 }
 

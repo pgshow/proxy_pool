@@ -19,7 +19,7 @@ func (s *IpHai) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *IpHai) Protocol() string {
 	return "GET"
 }
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/antchfx/htmlquery"
 	"github.com/phpgao/proxy_pool/model"
+	"github.com/phpgao/proxy_pool/util"
 	"strings"
 )
 
@@ -21,7 +22,7 @@ func (s *nimadaili) StartUrl() []string {
 	return u
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *nimadaili) Protocol() string {
 	return "GET"
 }
 
@@ -49,8 +50,9 @@ func (s *nimadaili) Parse(body string) (proxies []*model.HttpProxy, err error) {
 
 	list := htmlquery.Find(doc, "//table/tbody/tr[position()>1]")
 	for _, n := range list {
-		ip := htmlquery.InnerText(htmlquery.FindOne(n, "//td[1]"))
-		port := htmlquery.InnerText(htmlquery.FindOne(n, "//td[2]"))
+		tmpHost := htmlquery.InnerText(htmlquery.FindOne(n, "//td[1]"))
+
+		ip, port := util.Parse(tmpHost)
 
 		ip = strings.TrimSpace(ip)
 		port = strings.TrimSpace(port)

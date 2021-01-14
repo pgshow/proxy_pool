@@ -22,7 +22,7 @@ func (s *ip3366) StartUrl() []string {
 	}
 }
 
-func (s *proxyListsLine) Protocol() string {
+func (s *ip3366) Protocol() string {
 	return "GET"
 }
 

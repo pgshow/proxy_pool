@@ -17,7 +17,7 @@ func (s *freeProxyListNet) StartUrl() []string {
 }
 
 func (s *freeProxyListNet) Protocol() string {
-	return "POST"
+	return "Fetch"
 }
 
 func (s *freeProxyListNet) Cron() string {
