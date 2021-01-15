@@ -21,7 +21,7 @@ func (s *freeProxyListNet) Protocol() string {
 }
 
 func (s *freeProxyListNet) Cron() string {
-	return "@every 10m"
+	return "@every 3m"
 }
 
 func (s *freeProxyListNet) GetReferer() string {

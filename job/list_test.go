@@ -18,7 +18,7 @@ func TestGetSpiders(t *testing.T) {
 	//for _, c := range ListOfSpider {
 	//	testSpiderFetch(c)
 	//}
-	testSpider := &blackHat{}
+	testSpider := &ip89{}
 	testSpiderFetch(testSpider)
 }
 

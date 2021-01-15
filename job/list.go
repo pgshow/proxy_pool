@@ -5,18 +5,19 @@ import (
 )
 
 var ListOfSpider = []Crawler{
-	&freeProxyLists{},
+	//&freeProxyLists{},
+	//&freeProxyListNet{},
 	&rudnkh{},
 	&coolProxy{},
 	//&xici{},
 	&spys{},
-	&pubProxy{},
+	//&pubProxy{},
 	&kuaiProxy{},
 	&cn66{},
 	&feiyi{},
 	&ip89{},
 	&goubanjia{},
-	&ab57{},
+	//&ab57{},
 	&clarketm{},
 	&httptunnel{},
 	&proxylist{},
@@ -38,7 +39,7 @@ var ListOfSpider = []Crawler{
 	&proxyLists{},
 	&ip3366{},
 	&xiladaili{},
-	&nimadaili{},
+	//&nimadaili{},
 	//&zdy{},
 }
 

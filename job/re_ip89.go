@@ -1,42 +1,16 @@
 package job
 
 import (
-	"fmt"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
-	"net/url"
 	"regexp"
 	"strings"
 )
 
-var countryList = []string{
-	"印度尼西亚",
-	"美国",
-	"泰国",
-	"俄罗斯",
-	"巴西",
-	"乌克兰",
-	"北美地区",
-	"亚太地区",
-	"印度",
-	"IANA",
-	"波兰",
-	"英国",
-	"哥伦比亚",
-	"拉美地区",
-	"欧洲和中东地区",
-	"日本",
-	"阿根廷",
-	"孟加拉",
-	"柬埔寨",
-}
-
 func (s *ip89) StartUrl() []string {
-	var t []string
-	for _, c := range countryList {
-		t = append(t, fmt.Sprintf("http://www.89ip.cn/tqdl.html?api=1&num=300&port=&address%s&isp=", url.QueryEscape(c)))
+	return []string{
+		"http://api.89ip.cn/tqdl.html?api=1&num=60&port=&address=&isp=",
 	}
-	return t
 }
 
 func (s *ip89) Protocol() string {
@@ -44,7 +18,7 @@ func (s *ip89) Protocol() string {
 }
 
 func (s *ip89) GetReferer() string {
-	return "http://www.89ip.cn/"
+	return "http://api.89ip.cn/"
 }
 
 type ip89 struct {
