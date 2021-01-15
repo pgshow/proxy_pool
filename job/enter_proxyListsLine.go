@@ -29,7 +29,7 @@ func (s *proxyListsLine) Cron() string {
 }
 
 func (s *proxyListsLine) Name() string {
-	return "proxy-lists"
+	return "proxyListsLine"
 }
 
 func (s *proxyListsLine) Run() {

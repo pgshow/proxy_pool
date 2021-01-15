@@ -18,7 +18,7 @@ func (s *proxyIpList) Protocol() string {
 }
 
 func (s *proxyIpList) GetReferer() string {
-	return "https://www.my-proxy.com/"
+	return "http://proxy-ip-list.com"
 }
 
 type proxyIpList struct {

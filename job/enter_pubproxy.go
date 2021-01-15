@@ -28,7 +28,7 @@ func (s *pubProxy) Cron() string {
 }
 
 func (s *pubProxy) Name() string {
-	return "pub"
+	return "pubProxy"
 }
 
 func (s *pubProxy) Run() {

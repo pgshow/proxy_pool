@@ -43,7 +43,7 @@ func (s *aliveProxy) Cron() string {
 }
 
 func (s *aliveProxy) Name() string {
-	return "aliveproxy"
+	return "aliveProxy"
 }
 
 func (s *aliveProxy) Run() {

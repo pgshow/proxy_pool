@@ -31,7 +31,7 @@ func (s *myProxy) Cron() string {
 }
 
 func (s *myProxy) Name() string {
-	return "my_proxy"
+	return "myProxy"
 }
 
 func (s *myProxy) Run() {

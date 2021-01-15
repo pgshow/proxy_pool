@@ -9,7 +9,7 @@ import (
 
 func (s *dogdev) StartUrl() []string {
 	return []string{
-		"http://dogdev.net/Proxy/all",
+		"http://www.dogdev.net/Proxy/all",
 	}
 }
 
@@ -18,7 +18,7 @@ func (s *dogdev) Protocol() string {
 }
 
 func (s *dogdev) GetReferer() string {
-	return "http://dogdev.net/"
+	return "http://www.dogdev.net/"
 }
 
 type dogdev struct {

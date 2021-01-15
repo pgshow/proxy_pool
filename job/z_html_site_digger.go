@@ -27,7 +27,7 @@ func (s *siteDigger) Cron() string {
 }
 
 func (s *siteDigger) Name() string {
-	return "site_digger"
+	return "siteDigger"
 }
 
 func (s *siteDigger) GetReferer() string {

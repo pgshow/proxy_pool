@@ -34,7 +34,7 @@ func (s *kuaiProxy) Run() {
 }
 
 func (s *kuaiProxy) Name() string {
-	return "kuai"
+	return "kuaiProxy"
 }
 
 func (s *kuaiProxy) Parse(body string) (proxies []*model.HttpProxy, err error) {

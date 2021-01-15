@@ -280,21 +280,17 @@ func (s *Spider) SplashFetch(proxyURL string) (body string, err error) {
 
 	jsonValue, _ := json.Marshal(values)
 
-	resp, err1 := http.Post("http://localhost:8050/render.html", "application/json", bytes.NewBuffer(jsonValue))
+	resp, err := http.Post("http://localhost:8050/render.html", "application/json", bytes.NewBuffer(jsonValue))
 
-	err = err1
-
-	if err1 != nil {
+	if err != nil {
 		return
 	}
 
-	bodyByte, err2 := ioutil.ReadAll(resp.Body)
-
-	err = err2
+	bodyByte, err := ioutil.ReadAll(resp.Body)
 
 	defer resp.Body.Close()
 
-	if err2 != nil {
+	if err != nil {
 		return
 	}
 

@@ -32,7 +32,7 @@ func (s *proxyLists) Cron() string {
 }
 
 func (s *proxyLists) Name() string {
-	return "proxy_lists"
+	return "proxyLists"
 }
 
 func (s *proxyLists) GetReferer() string {

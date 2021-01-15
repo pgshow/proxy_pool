@@ -39,7 +39,7 @@ func (s *ip3366) Run() {
 }
 
 func (s *ip3366) Name() string {
-	return "Kuai"
+	return "ip3366"
 }
 
 func (s *ip3366) Parse(body string) (proxies []*model.HttpProxy, err error) {

@@ -34,7 +34,7 @@ func (s *freeProxyCz) Run() {
 }
 
 func (s *freeProxyCz) Name() string {
-	return "freeProxy.Cz"
+	return "freeProxyCz"
 }
 
 func (s *freeProxyCz) Parse(body string) (proxies []*model.HttpProxy, err error) {

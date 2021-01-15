@@ -14,6 +14,7 @@ import (
 const (
 	RegIp                = `(?:(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])\.){3}(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])`
 	RegProxy             = `(?:(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])\.){3}(?:[0,1]?\d?\d|2[0-4]\d|25[0-5]):\d{0,5}`
+	RegProxyExtract      = `((?:(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])\.){3}(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])):(\d{0,5})` //可以分别匹配IP和端口的正则
 	RegProxyWithoutColon = `(?:(?:[0,1]?\d?\d|2[0-4]\d|25[0-5])\.){3}(?:[0,1]?\d?\d|2[0-4]\d|25[0-5]) \d{0,5}`
 )
 
@@ -29,6 +30,17 @@ func FindIp(s string) string {
 	}
 
 	return rs[0]
+}
+
+// 提取IP和端口 :
+func FindIpPort(s string) [][]string {
+	reg := regexp.MustCompile(RegProxyExtract)
+	rs := reg.FindAllStringSubmatch(s, -1)
+	if rs == nil {
+		return nil
+	}
+
+	return rs
 }
 
 func GetWsFromChrome(url string) (ws string, err error) {

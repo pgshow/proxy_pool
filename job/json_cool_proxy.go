@@ -36,7 +36,7 @@ func (s *coolProxy) Cron() string {
 }
 
 func (s *coolProxy) Name() string {
-	return "cool_proxy"
+	return "coolProxy"
 }
 
 func (s *coolProxy) TimeOut() int {
