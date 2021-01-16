@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type newProxy struct {
+	Spider
+}
+
 func (s *newProxy) StartUrl() []string {
 	return []string{
 		"http://newproxy.org.ru/page.php?page_id=1",
@@ -19,10 +23,6 @@ func (s *newProxy) Protocol() string {
 
 func (s *newProxy) GetReferer() string {
 	return "http://newproxy.org.ru"
-}
-
-type newProxy struct {
-	Spider
 }
 
 func (s *newProxy) Cron() string {

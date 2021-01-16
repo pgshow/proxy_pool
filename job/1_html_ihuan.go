@@ -12,7 +12,6 @@ type ihuan struct {
 
 func (s *ihuan) StartUrl() []string {
 	return []string{
-		"https://ip.ihuan.me/ti.html",
 		"https://ip.ihuan.me/",
 		"https://ip.ihuan.me/address/5Lit5Zu9.html",
 	}

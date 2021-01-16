@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+type premProxy struct {
+	Spider
+}
+
 func (s *premProxy) StartUrl() []string {
 	return []string{
 		"https://premproxy.com/list/time-01.htm",
@@ -24,10 +28,6 @@ func (s *premProxy) Protocol() string {
 
 func (s *premProxy) GetReferer() string {
 	return "http://premproxy.com/"
-}
-
-type premProxy struct {
-	Spider
 }
 
 func (s *premProxy) Cron() string {

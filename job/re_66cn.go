@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type cn66 struct {
+	Spider
+}
+
 func (s *cn66) StartUrl() []string {
 	return []string{
 		"http://www.66ip.cn/mo.php?tqsl=2000",
@@ -21,10 +25,6 @@ func (s *cn66) Protocol() string {
 
 func (s *cn66) GetReferer() string {
 	return "http://www.66ip.cn/"
-}
-
-type cn66 struct {
-	Spider
 }
 
 func (s *cn66) Cron() string {

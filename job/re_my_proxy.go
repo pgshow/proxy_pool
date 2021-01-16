@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type myProxy struct {
+	Spider
+}
+
 func (s *myProxy) StartUrl() []string {
 	return []string{
 		"https://www.my-proxy.com/free-proxy-list.html",
@@ -20,10 +24,6 @@ func (s *myProxy) Protocol() string {
 
 func (s *myProxy) GetReferer() string {
 	return "https://www.my-proxy.com/"
-}
-
-type myProxy struct {
-	Spider
 }
 
 func (s *myProxy) Cron() string {

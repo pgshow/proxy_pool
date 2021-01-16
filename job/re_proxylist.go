@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type proxylist struct {
+	Spider
+}
+
 func (s *proxylist) StartUrl() []string {
 	return []string{
 		"http://proxy-list.org/english/index.php",
@@ -19,10 +23,6 @@ func (s *proxylist) Protocol() string {
 
 func (s *proxylist) GetReferer() string {
 	return "http://proxy-list.org"
-}
-
-type proxylist struct {
-	Spider
 }
 
 func (s *proxylist) Cron() string {

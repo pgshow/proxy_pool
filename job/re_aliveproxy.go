@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type aliveProxy struct {
+	Spider
+}
+
 func (s *aliveProxy) StartUrl() []string {
 	return []string{
 		"http://aliveproxy.com/proxy-list-port-8080/",
@@ -32,10 +36,6 @@ func (s *aliveProxy) Protocol() string {
 
 func (s *aliveProxy) GetReferer() string {
 	return "http://aliveproxy.com"
-}
-
-type aliveProxy struct {
-	Spider
 }
 
 func (s *aliveProxy) Cron() string {

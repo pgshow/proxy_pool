@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type httptunnel struct {
+	Spider
+}
+
 func (s *httptunnel) StartUrl() []string {
 	return []string{
 		"http://www.httptunnel.ge/ProxyListForFree.aspx",
@@ -19,10 +23,6 @@ func (s *httptunnel) Protocol() string {
 
 func (s *httptunnel) GetReferer() string {
 	return "http://www.httptunnel.ge/"
-}
-
-type httptunnel struct {
-	Spider
 }
 
 func (s *httptunnel) Cron() string {

@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type dogdev struct {
+	Spider
+}
+
 func (s *dogdev) StartUrl() []string {
 	return []string{
 		"http://www.dogdev.net/Proxy/all",
@@ -19,10 +23,6 @@ func (s *dogdev) Protocol() string {
 
 func (s *dogdev) GetReferer() string {
 	return "http://www.dogdev.net/"
-}
-
-type dogdev struct {
-	Spider
 }
 
 func (s *dogdev) Cron() string {

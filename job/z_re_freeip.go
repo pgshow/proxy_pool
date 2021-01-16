@@ -8,6 +8,10 @@ import (
 	"strings"
 )
 
+type freeip struct {
+	Spider
+}
+
 func (s *freeip) StartUrl() []string {
 	var u []string
 	for i := 1; i < 20; i++ {
@@ -22,10 +26,6 @@ func (s *freeip) Protocol() string {
 
 func (s *freeip) GetReferer() string {
 	return "https://www.freeip.top/"
-}
-
-type freeip struct {
-	Spider
 }
 
 func (s *freeip) Cron() string {

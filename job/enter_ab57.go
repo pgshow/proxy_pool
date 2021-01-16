@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+type ab57 struct {
+	Spider
+}
+
 func (s *ab57) StartUrl() []string {
 	return []string{
 		"http://ab57.ru/downloads/proxyold.txt",
@@ -17,10 +21,6 @@ func (s *ab57) Protocol() string {
 
 func (s *ab57) GetReferer() string {
 	return "http://ab57.ru/"
-}
-
-type ab57 struct {
-	Spider
 }
 
 func (s *ab57) Cron() string {

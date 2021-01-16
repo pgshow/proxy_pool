@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+type nntime struct {
+	Spider
+}
+
 func (s *nntime) StartUrl() []string {
 	return []string{
 		"http://nntime.com/proxy-updated-01.htm",
@@ -22,10 +26,6 @@ func (s *nntime) Protocol() string {
 
 func (s *nntime) GetReferer() string {
 	return "http://nntime.com/"
-}
-
-type nntime struct {
-	Spider
 }
 
 func (s *nntime) Cron() string {

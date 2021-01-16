@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type clarketm struct {
+	Spider
+}
+
 func (s *clarketm) StartUrl() []string {
 	return []string{
 		"https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list.txt",
@@ -19,10 +23,6 @@ func (s *clarketm) Protocol() string {
 
 func (s *clarketm) GetReferer() string {
 	return "http://github.com/"
-}
-
-type clarketm struct {
-	Spider
 }
 
 func (s *clarketm) Cron() string {

@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type xseo struct {
+	Spider
+}
+
 func (s *xseo) StartUrl() []string {
 	return []string{
 		"http://xseo.in/freeproxy",
@@ -19,10 +23,6 @@ func (s *xseo) Protocol() string {
 
 func (s *xseo) GetReferer() string {
 	return "http://xseo.in"
-}
-
-type xseo struct {
-	Spider
 }
 
 func (s *xseo) Cron() string {

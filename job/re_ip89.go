@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type ip89 struct {
+	Spider
+}
+
 func (s *ip89) StartUrl() []string {
 	return []string{
 		"http://api.89ip.cn/tqdl.html?api=1&num=60&port=&address=&isp=",
@@ -19,10 +23,6 @@ func (s *ip89) Protocol() string {
 
 func (s *ip89) GetReferer() string {
 	return "http://api.89ip.cn/"
-}
-
-type ip89 struct {
-	Spider
 }
 
 func (s *ip89) Cron() string {

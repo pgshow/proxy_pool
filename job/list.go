@@ -5,13 +5,17 @@ import (
 )
 
 var ListOfSpider = []Crawler{
+	&proxyServers{},
+	&proxyNova{},
+	&onlineProxy{},
 	&proxyHttp{},
 	&proxyScan{},
-	&freeProxyLists{},
+	&proxyServers{},
 	&proxyScrape{},
 	&hideMy{},
 	&rudnkh{},
-	&coolProxy{},
+	&proxy11{},
+	&proxySale{},
 	//&xici{},
 	//&spys{},
 	&pubProxy{},

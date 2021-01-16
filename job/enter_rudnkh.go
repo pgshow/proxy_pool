@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+type rudnkh struct {
+	Spider
+}
+
 func (s *rudnkh) StartUrl() []string {
 	return []string{
 		"https://proxy.rudnkh.me/txt",
@@ -18,10 +22,6 @@ func (s *rudnkh) Protocol() string {
 
 func (s *rudnkh) GetReferer() string {
 	return "https://proxy.rudnkh.me/"
-}
-
-type rudnkh struct {
-	Spider
 }
 
 func (s *rudnkh) Cron() string {

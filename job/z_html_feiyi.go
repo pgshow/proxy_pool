@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+type feiyi struct {
+	Spider
+}
+
 func (s *feiyi) StartUrl() []string {
 	return []string{
 		"http://www.feiyiproxy.com/?page_id=1457",
@@ -18,10 +22,6 @@ func (s *feiyi) Protocol() string {
 
 func (s *feiyi) GetReferer() string {
 	return "http://www.feiyiproxy.com/"
-}
-
-type feiyi struct {
-	Spider
 }
 
 func (s *feiyi) Cron() string {

@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+type goubanjia struct {
+	Spider
+}
+
 func (s *goubanjia) StartUrl() []string {
 	return []string{
 		"http://www.goubanjia.com/",
@@ -19,10 +23,6 @@ func (s *goubanjia) Protocol() string {
 
 func (s *goubanjia) GetReferer() string {
 	return "http://www.goubanjiaproxy.com/"
-}
-
-type goubanjia struct {
-	Spider
 }
 
 func (s *goubanjia) Cron() string {

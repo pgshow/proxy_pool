@@ -5,6 +5,10 @@ import (
 	"strings"
 )
 
+type proxyListsLine struct {
+	Spider
+}
+
 func (s *proxyListsLine) StartUrl() []string {
 	return []string{
 		"http://www.proxylists.net/http.txt",
@@ -18,10 +22,6 @@ func (s *proxyListsLine) Protocol() string {
 
 func (s *proxyListsLine) GetReferer() string {
 	return "https://www.proxylists.net/"
-}
-
-type proxyListsLine struct {
-	Spider
 }
 
 func (s *proxyListsLine) Cron() string {
