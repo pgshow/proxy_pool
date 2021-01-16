@@ -127,7 +127,7 @@ func (p *HttpProxy) GetHttpTransport() (t *http.Transport, err error) {
 func (p *HttpProxy) TestProxy(https bool) (err error) {
 
 	startAt := time.Now()
-	timeout := 6 * time.Second
+	timeout := 10 * time.Second
 
 	client := &http.Client{
 		Transport: &http.Transport{
@@ -140,6 +140,7 @@ func (p *HttpProxy) TestProxy(https bool) (err error) {
 
 	var testUrl string
 	if https {
+		//testUrl = "https://www.baidu.com"
 		//中国代理和国外代理使用不同的验证网站
 		if p.Country == "cn" {
 			testUrl = "https://ip.cip.cc"
@@ -148,6 +149,7 @@ func (p *HttpProxy) TestProxy(https bool) (err error) {
 			//testUrl = "https://api.ipify.org"
 		}
 	} else {
+		//testUrl = "http://www.baidu.com"
 		//中国代理和国外代理使用不同的验证网站
 		if p.Country == "cn" {
 			testUrl = "http://ip.cip.cc"
@@ -210,7 +212,8 @@ func (p *HttpProxy) TestConnectMethod(conn net.Conn) (err error) {
 	var testHost string
 	//testHost := "cip.cc:443"
 	//testHost := "ipify.org:443"
-	//中国代理和国外代理使用不同的验证网站
+	//testHost = "baidu.com:443"
+	//中国代理和国外代理使用不同的验证网站dd
 	if p.Country == "cn" {
 		testHost = "cip.cc:443"
 	} else {
