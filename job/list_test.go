@@ -1,10 +1,15 @@
 package job
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/antchfx/htmlquery"
 	"github.com/apex/log"
 	"github.com/phpgao/proxy_pool/model"
+	"io/ioutil"
+	"net"
+	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -18,21 +23,25 @@ func TestGetSpiders(t *testing.T) {
 	//for _, c := range ListOfSpider {
 	//	testSpiderFetch(c)
 	//}
-	testSpider := &onlineProxy{}
+	testSpider := &proxy11{}
 	testSpiderFetch(testSpider)
 }
 
 func testSpiderFetch(c Crawler) {
-	newProxyChan := make(chan *model.HttpProxy, 100)
+	newProxyChan := make(chan *model.HttpProxy, 10)
 	c.SetProxyChan(newProxyChan)
 	c.Run()
-	timeout := time.After(300 * time.Second)
+	timeout := time.After(3600 * time.Second)
+
 	for {
 		select {
 		case proxy := <-newProxyChan:
+			// 打印获取的代理
 			fmt.Println(proxy)
+
+			// 测试代理
 			go func(p *model.HttpProxy) {
-				flag := p.SimpleTcpTest(5)
+				flag := QuickTest(p)
 				fmt.Println(flag)
 			}(proxy)
 		case <-timeout:
@@ -40,6 +49,63 @@ func testSpiderFetch(c Crawler) {
 			return
 		}
 	}
+}
+
+// 自定义同时检测TCP和http运作情况的函数
+func QuickTest(p *model.HttpProxy) (err error) {
+	// 先检测tcp
+	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%s", p.Ip, p.Port), 5)
+	if err != nil {
+		return
+	}
+	defer func() {
+		if conn != nil {
+			_ = conn.Close()
+		}
+	}()
+
+	print("成功")
+
+	// http代理检测
+	client := &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyURL(&url.URL{
+				Host: fmt.Sprintf("%s:%s", p.Ip, p.Port)},
+			),
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		},
+		Timeout: 6 * time.Second}
+
+	testUrl := "http://v4.ident.me"
+
+	resp, err := client.Get(testUrl)
+	if err != nil {
+		return
+	}
+	defer func() {
+		err := resp.Body.Close()
+		if err != nil {
+			return
+		}
+	}()
+
+	if 200 != resp.StatusCode {
+		fmt.Printf("%s:%s 成功http code %d\n", p.Ip, p.Port, resp.StatusCode)
+		return
+	}
+
+	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+	html := strings.TrimSpace(string(b))
+	if html != p.GetIp() {
+		fmt.Printf("%s:%s html doesn't match", p.Ip, p.Port)
+		return
+	}
+
+	fmt.Printf("%s:%s 成功成功成功成功成功成功成功成功成功成功成功成功成功", p.Ip, p.Port)
+	return
 }
 
 func TestXpath(t *testing.T) {
