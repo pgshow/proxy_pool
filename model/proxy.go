@@ -140,13 +140,21 @@ func (p *HttpProxy) TestProxy(https bool) (err error) {
 
 	var testUrl string
 	if https {
-		//testUrl = "https://ip.cip.cc"
-		testUrl = "https://v4.ident.me"
-		//testUrl = "https://api.ipify.org"
+		//中国代理和国外代理使用不同的验证网站
+		if p.Country == "cn" {
+			testUrl = "https://ip.cip.cc"
+		} else {
+			testUrl = "https://v4.ident.me"
+			//testUrl = "https://api.ipify.org"
+		}
 	} else {
-		//testUrl = "http://ip.cip.cc"
-		testUrl = "http://v4.ident.me"
-		//testUrl = "http://api.ipify.org"
+		//中国代理和国外代理使用不同的验证网站
+		if p.Country == "cn" {
+			testUrl = "http://ip.cip.cc"
+		} else {
+			testUrl = "http://v4.ident.me"
+			//testUrl = "http://api.ipify.org"
+		}
 	}
 
 	resp, err := client.Get(testUrl)
@@ -198,9 +206,16 @@ func (p *HttpProxy) TestTcp() (conn net.Conn, err error) {
 // test http connect method
 func (p *HttpProxy) TestConnectMethod(conn net.Conn) (err error) {
 	defer conn.Close()
+
+	var testHost string
 	//testHost := "cip.cc:443"
 	//testHost := "ipify.org:443"
-	testHost := "ident.me:443"
+	//中国代理和国外代理使用不同的验证网站
+	if p.Country == "cn" {
+		testHost = "cip.cc:443"
+	} else {
+		testHost = "ident.me:443"
+	}
 	Connect := fmt.Sprintf(ConnectCommand, http.MethodConnect, testHost, "HTTP/1.1", testHost)
 	_, err = conn.Write([]byte(Connect))
 	if err != nil {
