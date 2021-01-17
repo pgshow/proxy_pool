@@ -2,6 +2,7 @@ package model
 
 import (
 	"bytes"
+	"context"
 	"crypto/md5"
 	"crypto/tls"
 	"encoding/hex"
@@ -9,6 +10,7 @@ import (
 	"fmt"
 	"github.com/fatih/structs"
 	"github.com/phpgao/proxy_pool/util"
+	tcp "github.com/tevino/tcp-shaker"
 	"io"
 	"io/ioutil"
 	"net"
@@ -249,6 +251,25 @@ func (p *HttpProxy) TestConnectMethod(conn net.Conn) (err error) {
 	if (version != "HTTP/1.1" && version != "HTTP/1.0") || code != "200" {
 		return errors.New("bad response = " + stringBack)
 	}
+
+	return
+}
+
+// SYN TCP 方式检测新加代理的存活
+func (p *HttpProxy) SynTcpTest() (err error) {
+	c := tcp.NewChecker()
+
+	ctx, stopChecker := context.WithCancel(context.Background())
+	defer stopChecker()
+	go func() {
+		if err := c.CheckingLoop(ctx); err != nil {
+			logger.WithField("fatal", err).Warn("SynTcp checking loop stopped due to fatal error")
+		}
+	}()
+
+	<-c.WaitReady()
+
+	err = c.CheckAddr(fmt.Sprintf("%s:%s", p.Ip, p.Port), config.GetTcpTestTimeOut())
 
 	return
 }

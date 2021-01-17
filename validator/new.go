@@ -40,11 +40,11 @@ func NewValidator() {
 						return
 					}
 
-					//err = p.SimpleTcpTest(config.GetTcpTestTimeOut())
-					//if err != nil {
-					//	logger.WithError(err).WithField("proxy", p.GetProxyUrl()).Debug("error test tcp")
-					//	return
-					//}
+					err = p.SynTcpTest()
+					if err != nil {
+						logger.WithError(err).WithField("proxy", p.GetProxyUrl()).Debug("error test syn tcp")
+						return
+					}
 					// http test
 					err = p.TestProxy(false)
 					if err != nil {

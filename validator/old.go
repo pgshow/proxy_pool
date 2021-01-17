@@ -28,74 +28,37 @@ func OldValidator() {
 						lockMap.Delete(key)
 					}()
 					if storeEngine.Exists(p) {
-
-						var score, httpSuccess, httpsSuccess = 0, false, false // http 成功标识, https成功标识
-
-						if p.IsHttps() {
-							// 如果以前是https,则只检测https
-							err := p.TestProxy(true)
-							if err != nil {
-								logger.WithError(err).WithField(
-									"proxy", p.GetProxyUrl()).Debug("error retest https proxy")
-							} else {
-								httpsSuccess = true
-							}
-						} else {
-							// 如果以前不是https,则检测两种协议
-							err := p.TestProxy(false)
-							if err != nil {
-								logger.WithError(err).WithField(
-									"proxy", p.GetProxyUrl()).Debug("error retest http proxy")
-							} else {
-								httpSuccess = true
-
-								err := p.TestProxy(true)
-								if err != nil {
-									logger.WithError(err).WithField(
-										"proxy", p.GetProxyUrl()).Debug("error retest https proxy")
-								} else {
-									httpsSuccess = true
-								}
-							}
+						var score int
+						conn, err := p.TestTcp()
+						if err != nil {
+							score = -30
 						}
+						// if tcp test success
+						if conn != nil {
+							score = 10
+							// test https
 
-						if p.IsHttps() {
-							// 如果以前是https
-
-							if httpsSuccess {
-								score = 10
+							err := p.TestConnectMethod(conn)
+							if err != nil {
+								logger.WithError(err).WithField("proxy", p.GetProxyWithSchema()).Debug("error https retest")
+								if p.IsHttps() {
+									score = -20
+								}
 							} else {
-								score = -20 // https失败
-							}
-						} else {
-							// 如果以前不是https
-
-							if httpsSuccess {
-
-								// https协议成功,更新协议
-								score = 10
 								p.Schema = "https"
 								// save proxy to db
-								err := storeEngine.UpdateSchema(p)
+								err = storeEngine.UpdateSchema(p)
 								if err != nil {
 									logger.WithError(err).WithField("proxy", p.GetProxyWithSchema()).Info("error update schema")
 								}
-
-							} else if httpSuccess {
-								// 只有http协议成功
-								score = 10
-
-							} else {
-								score = -30 // 两种协议都失败
 							}
 						}
-
 						//logger.WithFields(log.Fields{
 						//	"score": score,
 						//	"proxy": p.GetProxyWithSchema(),
 						//}).Debug("set score")
 
-						err := storeEngine.AddScore(p, score)
+						err = storeEngine.AddScore(p, score)
 						if err != nil {
 							logger.WithError(err).WithField(
 								"proxy", p.GetProxyWithSchema()).Error("error setting score")

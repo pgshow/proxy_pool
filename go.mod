@@ -7,11 +7,9 @@ require (
 	github.com/antchfx/xpath v1.1.10 // indirect
 	github.com/apex/log v1.1.1
 	github.com/avast/retry-go v2.4.3+incompatible
-	github.com/benbjohnson/phantomjs v0.0.0-20181211182228-6499a20f5cd6 // indirect
 	github.com/chromedp/cdproto v0.0.0-20191114225735-6626966fbae4
 	github.com/chromedp/chromedp v0.5.2
 	github.com/corpix/uarand v0.1.0
-	github.com/ego008/gophantomjs v0.0.0-20190621001241-28e07bebf8c2
 	github.com/elazarl/goproxy v0.0.0-20190711103511-473e67f1d7d2 // indirect
 	github.com/elazarl/goproxy/ext v0.0.0-20190711103511-473e67f1d7d2 // indirect
 	github.com/fatih/camelcase v1.0.0 // indirect
@@ -25,6 +23,7 @@ require (
 	github.com/robertkrimen/otto v0.0.0-20180617131154-15f95af6e78d
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/smartystreets/goconvey v0.0.0-20190710185942-9d28bd7c0945 // indirect
+	github.com/tevino/tcp-shaker v0.0.0-20191112104505-00eab0aefc80
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 	golang.org/x/text v0.3.2 // indirect
