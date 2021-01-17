@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/antchfx/htmlquery"
 	"github.com/phpgao/proxy_pool/model"
+	"github.com/phpgao/proxy_pool/util"
 	"strings"
 )
 
@@ -49,11 +50,14 @@ func (s *xiladaili) Parse(body string) (proxies []*model.HttpProxy, err error) {
 
 	list := htmlquery.Find(doc, "//table/tbody/tr[position()>1]")
 	for _, n := range list {
-		ip := htmlquery.InnerText(htmlquery.FindOne(n, "//td[1]"))
-		port := htmlquery.InnerText(htmlquery.FindOne(n, "//td[2]"))
+		tmp := htmlquery.FindOne(n, "//td[1]")
 
-		ip = strings.TrimSpace(ip)
-		port = strings.TrimSpace(port)
+		if tmp == nil {
+			// 解析代理字符串失败
+			continue
+		}
+
+		ip, port := util.Parse(strings.TrimSpace(htmlquery.InnerText(tmp)))
 
 		proxies = append(proxies, &model.HttpProxy{
 			Ip:   ip,

@@ -23,7 +23,7 @@ func TestGetSpiders(t *testing.T) {
 	//for _, c := range ListOfSpider {
 	//	testSpiderFetch(c)
 	//}
-	testSpider := &proxy11{}
+	testSpider := &xiladaili{}
 	testSpiderFetch(testSpider)
 }
 
