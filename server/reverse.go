@@ -20,6 +20,7 @@ var (
 	timeOut = time.Duration(util.ServerConf.HttpsConnectTimeOut) * time.Second
 )
 
+// https隧道代理
 func handleTunneling(w http.ResponseWriter, r *http.Request) {
 	var err error
 	p := *cache.Cache.Get()
@@ -88,6 +89,8 @@ func transfer(destination io.WriteCloser, source io.ReadCloser) {
 	}()
 	io.Copy(destination, source)
 }
+
+// http隧道代理
 func handleHTTP(w http.ResponseWriter, req *http.Request) {
 	var err error
 	var Transport http.RoundTripper

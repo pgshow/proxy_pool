@@ -29,53 +29,67 @@ func OldValidator() {
 					}()
 					if storeEngine.Exists(p) {
 						var (
-							score     int
-							failHttp  bool // http 失败标识
-							failHttps bool // https失败标识
+							score       int
+							httpSucces  bool // http 成功标识
+							httpsSucces bool // https成功标识
 						)
 
-						// 先检测https，在检测http，并记录下成功与否
-						err := p.TestProxy(true)
-						if err != nil {
-							logger.WithError(err).WithField(
-								"proxy", p.GetProxyUrl()).Debug("error retest https proxy")
-							failHttps = true
-
+						if p.IsHttps() {
+							// 如果以前是https,则只检测https
+							err := p.TestProxy(true)
+							if err != nil {
+								logger.WithError(err).WithField(
+									"proxy", p.GetProxyUrl()).Debug("error retest https proxy")
+							} else {
+								httpsSucces = true
+							}
 						} else {
-							if !p.IsHttps() {
-								// 以前是https的不用重新检测http
-								err := p.TestProxy(false)
+							// 如果以前不是https,则检测两种协议
+							err := p.TestProxy(false)
+							if err != nil {
+								logger.WithError(err).WithField(
+									"proxy", p.GetProxyUrl()).Debug("error retest http proxy")
+							} else {
+								httpSucces = true
+
+								err := p.TestProxy(true)
 								if err != nil {
 									logger.WithError(err).WithField(
-										"proxy", p.GetProxyUrl()).Debug("error retest http proxy")
-									failHttp = true
+										"proxy", p.GetProxyUrl()).Debug("error retest https proxy")
+								} else {
+									httpsSucces = true
 								}
 							}
 						}
 
 						if p.IsHttps() {
 							// 如果以前是https
-							if failHttps {
-								score = -20 // https失败
-							} else {
+
+							if httpsSucces {
 								score = 10
+							} else {
+								score = -20 // https失败
 							}
 						} else {
 							// 如果以前不是https
-							if failHttp && failHttps {
-								score = -30 // 两种协议都失败
-							} else {
-								score = 10 // 任一协议成功
-							}
 
-							// https 验证成功，把http改成https
-							if !failHttps {
+							if httpsSucces {
+
+								// https协议成功,更新协议
+								score = 10
 								p.Schema = "https"
 								// save proxy to db
-								err = storeEngine.UpdateSchema(p)
+								err := storeEngine.UpdateSchema(p)
 								if err != nil {
 									logger.WithError(err).WithField("proxy", p.GetProxyWithSchema()).Info("error update schema")
 								}
+
+							} else if httpSucces {
+								// 只有http协议成功
+								score = 10
+
+							} else {
+								score = -30 // 两种协议都失败
 							}
 						}
 
@@ -84,7 +98,7 @@ func OldValidator() {
 						//	"proxy": p.GetProxyWithSchema(),
 						//}).Debug("set score")
 
-						err = storeEngine.AddScore(p, score)
+						err := storeEngine.AddScore(p, score)
 						if err != nil {
 							logger.WithError(err).WithField(
 								"proxy", p.GetProxyWithSchema()).Error("error setting score")
