@@ -50,7 +50,7 @@ func (s *spys) Run() {
 	getProxy(s)
 }
 
-func (s *spys) Fetch(siteUrl string, useProxy bool, c Crawler) (body string, err error) {
+func (s *spys) Fetch(siteUrl string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(5)) * time.Second)

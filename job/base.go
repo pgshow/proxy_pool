@@ -40,7 +40,7 @@ type Crawler interface {
 	NeedRetry() bool
 	Enabled() bool
 	// url , if use proxy
-	Fetch(string, bool, Crawler) (string, error)
+	Fetch(string, bool, Crawler) (string, string, error)
 	SplashFetch(string) (string, error) // 使用 Splash 打开并渲染网页
 	SetProxyChan(chan<- *model.HttpProxy)
 	GetProxyChan() chan<- *model.HttpProxy
@@ -118,7 +118,7 @@ func (s *Spider) Retry() uint {
 	return uint(util.ServerConf.MaxRetry)
 }
 
-func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
+func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
@@ -163,10 +163,10 @@ func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, 
 
 		randP := list[fastrand.Intn(len(list))]
 
-		proxy := fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
+		spiderProxy = fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
 
-		logger.WithField("proxy", proxy).Debug(s.Name() + "with proxy")
-		resp, body, errs = superAgent.Proxy(proxy).End()
+		logger.WithField("proxy", spiderProxy).Debug(c.Name() + " with proxy")
+		resp, body, errs = superAgent.Proxy(spiderProxy).End()
 	} else {
 		resp, body, errs = superAgent.End()
 	}
@@ -195,6 +195,7 @@ func getProxy(s Crawler) {
 			}()
 
 			var newProxies []*model.HttpProxy
+			var spiderProxy string
 
 			var attempts = 0
 			err := retry.Do(
@@ -221,7 +222,7 @@ func getProxy(s Crawler) {
 						resp, err = s.SplashFetch(proxySiteURL)
 					} else {
 						// go.http 就能爬取的网站
-						resp, err = s.Fetch(proxySiteURL, withProxy, s)
+						resp, spiderProxy, err = s.Fetch(proxySiteURL, withProxy, s)
 					}
 
 					if err != nil {
@@ -259,9 +260,10 @@ func getProxy(s Crawler) {
 			}
 
 			logger.WithFields(log.Fields{
-				"name":  s.Name(),
-				"url":   proxySiteURL,
-				"count": len(newProxies),
+				"name":     s.Name(),
+				"url":      proxySiteURL,
+				"count":    len(newProxies),
+				"useProxy": spiderProxy,
 			}).Info("url proxy report")
 
 			var tmpMap = map[string]int{}

@@ -15,7 +15,7 @@ type proxyScan struct {
 	Spider
 }
 
-func (s *proxyScan) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
+func (s *proxyScan) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 	}
