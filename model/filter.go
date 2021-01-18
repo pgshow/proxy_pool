@@ -16,7 +16,20 @@ func filterOfSchema(v string) func(HttpProxy) bool {
 
 func filterOfCn(v string) func(HttpProxy) bool {
 	return func(proxy HttpProxy) bool {
-		return proxy.Country == strings.ToLower(v)
+
+		if strings.HasPrefix(v, "-") {
+			// -号国家名（例如-cn）,代表剔除模式
+			if "-"+proxy.Country != strings.ToLower(v) {
+				return true
+			}
+		} else {
+			// 非-号则是添加模式
+			if proxy.Country == strings.ToLower(v) {
+				return true
+			}
+		}
+
+		return false
 	}
 }
 func filterOfScore(v int) func(HttpProxy) bool {

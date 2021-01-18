@@ -144,14 +144,14 @@ func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, 
 		filter := map[string]string{
 			"schema":  "http",
 			"score":   "60",
-			"country": "",
-			"limit":   "500",
+			"country": "-cn", // 国外的网站别使用中国代理
+			"limit":   "1000",
 		}
 		if strings.HasPrefix(c.StartUrl()[0], "https") {
 			filter["schema"] = "https"
 		}
 		if c.Profile().CnWebsite {
-			filter["country"] = "cn"
+			filter["country"] = "cn" // 中国的网站使用中国代理
 		}
 
 		var list []model.HttpProxy
