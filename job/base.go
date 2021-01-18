@@ -260,10 +260,10 @@ func getProxy(s Crawler) {
 			}
 
 			logger.WithFields(log.Fields{
-				"name":     s.Name(),
-				"url":      proxySiteURL,
-				"count":    len(newProxies),
-				"useProxy": spiderProxy,
+				"name":        s.Name(),
+				"url":         proxySiteURL,
+				"count":       len(newProxies),
+				"spiderProxy": spiderProxy,
 			}).Info("url proxy report")
 
 			var tmpMap = map[string]int{}
