@@ -17,8 +17,12 @@ func (s *kxdaili) StartUrl() []string {
 	}
 }
 
-func (s *kxdaili) Protocol() string {
-	return "GET"
+func (s *kxdaili) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *kxdaili) Cron() string {

@@ -30,8 +30,12 @@ func (s *aliveProxy) StartUrl() []string {
 	}
 }
 
-func (s *aliveProxy) Protocol() string {
-	return "GET"
+func (s *aliveProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *aliveProxy) GetReferer() string {

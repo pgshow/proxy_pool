@@ -18,8 +18,12 @@ func (s *siteDigger) StartUrl() []string {
 	}
 }
 
-func (s *siteDigger) Protocol() string {
-	return "GET"
+func (s *siteDigger) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *siteDigger) Cron() string {

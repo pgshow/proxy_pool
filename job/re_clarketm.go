@@ -17,8 +17,12 @@ func (s *clarketm) StartUrl() []string {
 	}
 }
 
-func (s *clarketm) Protocol() string {
-	return "GET"
+func (s *clarketm) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *clarketm) GetReferer() string {

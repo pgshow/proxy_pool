@@ -18,8 +18,12 @@ func (s *myProxy) StartUrl() []string {
 	}
 }
 
-func (s *myProxy) Protocol() string {
-	return "GET"
+func (s *myProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *myProxy) GetReferer() string {

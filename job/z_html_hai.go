@@ -19,8 +19,12 @@ func (s *IpHai) StartUrl() []string {
 	}
 }
 
-func (s *IpHai) Protocol() string {
-	return "GET"
+func (s *IpHai) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *IpHai) Cron() string {

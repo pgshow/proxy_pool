@@ -13,8 +13,12 @@ func (s *blackHat) StartUrl() []string {
 	}
 }
 
-func (s *blackHat) Protocol() string {
-	return "GET"
+func (s *blackHat) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *blackHat) GetReferer() string {

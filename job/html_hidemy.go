@@ -16,8 +16,12 @@ func (s *hideMy) StartUrl() []string {
 	}
 }
 
-func (s *hideMy) Protocol() string {
-	return "Fetch"
+func (s *hideMy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *hideMy) Cron() string {

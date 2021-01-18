@@ -16,8 +16,12 @@ func (s *freeProxyLists) StartUrl() []string {
 	}
 }
 
-func (s *freeProxyLists) Protocol() string {
-	return "RenderFetch"
+func (s *freeProxyLists) Profile() *Setting {
+	return &Setting{
+		Protocol:    "RenderFetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *freeProxyLists) Cron() string {

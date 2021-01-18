@@ -17,8 +17,12 @@ func (s *httptunnel) StartUrl() []string {
 	}
 }
 
-func (s *httptunnel) Protocol() string {
-	return "GET"
+func (s *httptunnel) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *httptunnel) GetReferer() string {

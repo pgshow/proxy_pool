@@ -17,8 +17,12 @@ func (s *xseo) StartUrl() []string {
 	}
 }
 
-func (s *xseo) Protocol() string {
-	return "GET"
+func (s *xseo) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *xseo) GetReferer() string {

@@ -16,8 +16,12 @@ func (s *freeProxyListNet) StartUrl() []string {
 	}
 }
 
-func (s *freeProxyListNet) Protocol() string {
-	return "Fetch"
+func (s *freeProxyListNet) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *freeProxyListNet) Cron() string {

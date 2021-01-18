@@ -15,7 +15,7 @@ type proxyScan struct {
 	Spider
 }
 
-func (s *proxyScan) Fetch(proxyURL string, useProxy bool) (body string, err error) {
+func (s *proxyScan) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 	}
@@ -48,8 +48,12 @@ func (s *proxyScan) StartUrl() []string {
 	}
 }
 
-func (s *proxyScan) Protocol() string {
-	return "Fetch"
+func (s *proxyScan) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyScan) Cron() string {

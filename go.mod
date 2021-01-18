@@ -24,6 +24,7 @@ require (
 	github.com/robfig/cron/v3 v3.0.0
 	github.com/smartystreets/goconvey v0.0.0-20190710185942-9d28bd7c0945 // indirect
 	github.com/tevino/tcp-shaker v0.0.0-20191112104505-00eab0aefc80
+	gitlab.com/NebulousLabs/fastrand v0.0.0-20181126182046-603482d69e40
 	golang.org/x/net v0.0.0-20200813134508-3edf25e44fcc // indirect
 	golang.org/x/sync v0.0.0-20190423024810-112230192c58
 	golang.org/x/text v0.3.2 // indirect

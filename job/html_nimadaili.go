@@ -22,8 +22,12 @@ func (s *nimadaili) StartUrl() []string {
 	return u
 }
 
-func (s *nimadaili) Protocol() string {
-	return "GET"
+func (s *nimadaili) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *nimadaili) Cron() string {

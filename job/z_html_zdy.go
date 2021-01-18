@@ -16,7 +16,7 @@ type zdy struct {
 	Spider
 }
 
-func (s *zdy) Fetch(proxyURL string, useProxy bool) (body string, err error) {
+func (s *zdy) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 	}
@@ -62,8 +62,12 @@ func (s *zdy) StartUrl() []string {
 	}
 }
 
-func (s *zdy) Protocol() string {
-	return "GET"
+func (s *zdy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *zdy) Enabled() bool {

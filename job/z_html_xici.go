@@ -17,8 +17,12 @@ func (s *xici) StartUrl() []string {
 	}
 }
 
-func (s *xici) Protocol() string {
-	return "GET"
+func (s *xici) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *xici) Cron() string {

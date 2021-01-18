@@ -9,6 +9,7 @@ import (
 	"math/rand"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 var (
@@ -159,6 +160,7 @@ func handlerRandom(c *gin.Context) {
 		return
 
 	}
+	rand.Seed(time.Now().UnixNano())
 	resp.Data = proxies[rand.Intn(len(proxies))]
 	resp.Total = len(proxies)
 

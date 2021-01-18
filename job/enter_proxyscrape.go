@@ -15,8 +15,12 @@ func (s *proxyScrape) StartUrl() []string {
 	}
 }
 
-func (s *proxyScrape) Protocol() string {
-	return "GET"
+func (s *proxyScrape) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyScrape) GetReferer() string {

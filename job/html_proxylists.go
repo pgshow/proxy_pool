@@ -23,8 +23,12 @@ func (s *proxyLists) StartUrl() []string {
 	}
 }
 
-func (s *proxyLists) Protocol() string {
-	return "GET"
+func (s *proxyLists) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyLists) Cron() string {

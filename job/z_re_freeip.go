@@ -20,8 +20,12 @@ func (s *freeip) StartUrl() []string {
 	return u
 }
 
-func (s *freeip) Protocol() string {
-	return "GET"
+func (s *freeip) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *freeip) GetReferer() string {

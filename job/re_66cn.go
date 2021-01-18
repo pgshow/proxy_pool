@@ -19,8 +19,12 @@ func (s *cn66) StartUrl() []string {
 	}
 }
 
-func (s *cn66) Protocol() string {
-	return "GET"
+func (s *cn66) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *cn66) GetReferer() string {

@@ -22,8 +22,12 @@ func (s *ip3366) StartUrl() []string {
 	}
 }
 
-func (s *ip3366) Protocol() string {
-	return "GET"
+func (s *ip3366) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *ip3366) Cron() string {

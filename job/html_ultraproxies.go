@@ -20,8 +20,12 @@ func (s *ultraProxies) StartUrl() []string {
 	}
 }
 
-func (s *ultraProxies) Protocol() string {
-	return "GET"
+func (s *ultraProxies) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *ultraProxies) Cron() string {

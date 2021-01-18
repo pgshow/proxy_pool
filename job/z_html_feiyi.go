@@ -16,8 +16,12 @@ func (s *feiyi) StartUrl() []string {
 	}
 }
 
-func (s *feiyi) Protocol() string {
-	return "GET"
+func (s *feiyi) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *feiyi) GetReferer() string {

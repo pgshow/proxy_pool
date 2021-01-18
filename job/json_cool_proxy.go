@@ -19,8 +19,12 @@ func (s *coolProxy) StartUrl() []string {
 	}
 }
 
-func (s *coolProxy) Protocol() string {
-	return "GET"
+func (s *coolProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *coolProxy) GetReferer() string {

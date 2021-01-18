@@ -15,8 +15,12 @@ func (s *ab57) StartUrl() []string {
 	}
 }
 
-func (s *ab57) Protocol() string {
-	return "Fetch"
+func (s *ab57) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *ab57) GetReferer() string {

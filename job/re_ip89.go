@@ -17,8 +17,12 @@ func (s *ip89) StartUrl() []string {
 	}
 }
 
-func (s *ip89) Protocol() string {
-	return "GET"
+func (s *ip89) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *ip89) GetReferer() string {

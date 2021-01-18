@@ -17,8 +17,12 @@ func (s *ihuan) StartUrl() []string {
 	}
 }
 
-func (s *ihuan) Protocol() string {
-	return "GET"
+func (s *ihuan) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *ihuan) Cron() string {

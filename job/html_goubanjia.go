@@ -17,8 +17,12 @@ func (s *goubanjia) StartUrl() []string {
 	}
 }
 
-func (s *goubanjia) Protocol() string {
-	return "GET"
+func (s *goubanjia) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *goubanjia) GetReferer() string {

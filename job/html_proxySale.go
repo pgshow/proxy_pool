@@ -18,8 +18,12 @@ func (s *proxySale) StartUrl() []string {
 	}
 }
 
-func (s *proxySale) Protocol() string {
-	return "Fetch"
+func (s *proxySale) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxySale) Cron() string {

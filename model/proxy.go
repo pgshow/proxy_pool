@@ -40,6 +40,10 @@ type HttpProxy struct {
 	Country   string `json:"country"`
 }
 
+func (p *HttpProxy) Error() string {
+	panic("implement me")
+}
+
 func Make(m map[string]string) (newProxy HttpProxy, err error) {
 	rVal := reflect.ValueOf(&newProxy).Elem()
 	rType := reflect.TypeOf(newProxy)

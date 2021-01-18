@@ -16,8 +16,12 @@ func (s *proxyServers) StartUrl() []string {
 	}
 }
 
-func (s *proxyServers) Protocol() string {
-	return "RenderFetch"
+func (s *proxyServers) Profile() *Setting {
+	return &Setting{
+		Protocol:    "RenderFetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyServers) Cron() string {

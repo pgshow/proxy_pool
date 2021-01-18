@@ -17,8 +17,12 @@ func (s *freeProxyCz) StartUrl() []string {
 	}
 }
 
-func (s *freeProxyCz) Protocol() string {
-	return "Fetch"
+func (s *freeProxyCz) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *freeProxyCz) Cron() string {

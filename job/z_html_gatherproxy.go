@@ -16,8 +16,12 @@ func (s *gatherproxy) StartUrl() []string {
 	}
 }
 
-func (s *gatherproxy) Protocol() string {
-	return "GET"
+func (s *gatherproxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *gatherproxy) Cron() string {

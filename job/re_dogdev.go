@@ -17,8 +17,12 @@ func (s *dogdev) StartUrl() []string {
 	}
 }
 
-func (s *dogdev) Protocol() string {
-	return "GET"
+func (s *dogdev) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *dogdev) GetReferer() string {

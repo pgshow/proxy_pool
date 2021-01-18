@@ -38,6 +38,7 @@ func handleTunneling(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		l := len(proxies)
+		rand.Seed(time.Now().UnixNano())
 		proxy := proxies[rand.Intn(l)]
 		logger.WithField("proxy", proxy.GetProxyWithSchema()).Debug("dynamic https")
 		msg := fmt.Sprintf(model.ConnectCommand, http.MethodConnect, r.Host, "HTTP/1.1", r.Host)

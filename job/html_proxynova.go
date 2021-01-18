@@ -16,8 +16,12 @@ func (s *proxyNova) StartUrl() []string {
 	}
 }
 
-func (s *proxyNova) Protocol() string {
-	return "Fetch"
+func (s *proxyNova) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyNova) Cron() string {

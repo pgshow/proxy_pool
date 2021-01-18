@@ -22,8 +22,12 @@ func (s *premProxy) StartUrl() []string {
 	}
 }
 
-func (s *premProxy) Protocol() string {
-	return "GET"
+func (s *premProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *premProxy) GetReferer() string {

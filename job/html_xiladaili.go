@@ -22,8 +22,12 @@ func (s *xiladaili) StartUrl() []string {
 	return u
 }
 
-func (s *xiladaili) Protocol() string {
-	return "GET"
+func (s *xiladaili) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *xiladaili) Cron() string {

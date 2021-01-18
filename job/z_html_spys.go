@@ -26,8 +26,12 @@ func (s *spys) StartUrl() []string {
 	}
 }
 
-func (s *spys) Protocol() string {
-	return "GET"
+func (s *spys) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *spys) Cron() string {
@@ -46,7 +50,7 @@ func (s *spys) Run() {
 	getProxy(s)
 }
 
-func (s *spys) Fetch(siteUrl string, useProxy bool) (body string, err error) {
+func (s *spys) Fetch(siteUrl string, useProxy bool, c Crawler) (body string, err error) {
 
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(5)) * time.Second)

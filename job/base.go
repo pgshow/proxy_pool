@@ -13,8 +13,8 @@ import (
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
 	"github.com/phpgao/proxy_pool/validator"
+	"gitlab.com/NebulousLabs/fastrand"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"strings"
 	"time"
@@ -33,14 +33,14 @@ func init() {
 type Crawler interface {
 	Run()
 	StartUrl() []string
-	Protocol() string
+	Profile() *Setting
 	Cron() string
 	Name() string
 	Retry() uint
 	NeedRetry() bool
 	Enabled() bool
 	// url , if use proxy
-	Fetch(string, bool) (string, error)
+	Fetch(string, bool, Crawler) (string, error)
 	SplashFetch(string) (string, error) // 使用 Splash 打开并渲染网页
 	SetProxyChan(chan<- *model.HttpProxy)
 	GetProxyChan() chan<- *model.HttpProxy
@@ -49,6 +49,13 @@ type Crawler interface {
 
 type Spider struct {
 	ch chan<- *model.HttpProxy
+}
+
+// 爬虫Job的设置
+type Setting struct {
+	Protocol    string //http 方法
+	AlwaysProxy bool   //仅代理才能爬的站
+	CnWebsite   bool   //网站在中国
 }
 
 func (s *Spider) StartUrl() []string {
@@ -111,10 +118,10 @@ func (s *Spider) Retry() uint {
 	return uint(util.ServerConf.MaxRetry)
 }
 
-func (s *Spider) Fetch(proxyURL string, useProxy bool) (body string, err error) {
+func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
 
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
 	request := gorequest.New()
@@ -130,14 +137,36 @@ func (s *Spider) Fetch(proxyURL string, useProxy bool) (body string, err error) 
 		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
 
 	if useProxy {
-		var proxy model.HttpProxy
-		proxy, err = storeEngine.Random()
-		if err != nil {
+		//var proxy model.HttpProxy
+		//proxy, err = storeEngine.Random()
+
+		// 根据条件提取一个代理给爬虫用
+		filter := map[string]string{
+			"schema":  "http",
+			"score":   "60",
+			"country": "",
+			"limit":   "500",
+		}
+		if strings.HasPrefix(c.StartUrl()[0], "https") {
+			filter["schema"] = "https"
+		}
+		if c.Profile().CnWebsite {
+			filter["country"] = "cn"
+		}
+
+		var list []model.HttpProxy
+		list, err = storeEngine.Get(filter)
+
+		if err != nil || list == nil {
 			return
 		}
-		p := fmt.Sprintf("http://%s:%s", proxy.Ip, proxy.Port)
-		logger.WithField("proxy", p).Debug("with proxy")
-		resp, body, errs = superAgent.Proxy(p).End()
+
+		randP := list[fastrand.Intn(len(list))]
+
+		proxy := fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
+
+		logger.WithField("proxy", proxy).Debug(s.Name() + "with proxy")
+		resp, body, errs = superAgent.Proxy(proxy).End()
 	} else {
 		resp, body, errs = superAgent.End()
 	}
@@ -180,18 +209,19 @@ func getProxy(s Crawler) {
 
 					var withProxy bool
 
-					if attempts > 1 {
+					if attempts > 1 || s.Profile().AlwaysProxy {
+						// 如果失败了一次，或者是只能使用代理才能爬的站
 						withProxy = true
 					}
 
 					var resp string
 
-					if s.Protocol() == "RenderFetch" {
+					if s.Profile().Protocol == "RenderFetch" {
 						// 需要 浏览器渲染 的网站
 						resp, err = s.SplashFetch(proxySiteURL)
 					} else {
 						// go.http 就能爬取的网站
-						resp, err = s.Fetch(proxySiteURL, withProxy)
+						resp, err = s.Fetch(proxySiteURL, withProxy, s)
 					}
 
 					if err != nil {
@@ -260,7 +290,7 @@ func getProxy(s Crawler) {
 func (s *Spider) SplashFetch(proxyURL string) (body string, err error) {
 
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
 	// 设置 Splash 参数

@@ -16,7 +16,7 @@ type openProxy struct {
 	Spider
 }
 
-func (s *openProxy) Fetch(proxyURL string, useProxy bool) (body string, err error) {
+func (s *openProxy) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, err error) {
 	// 第一次爬取网站的随机目录名称
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
@@ -98,8 +98,12 @@ func (s *openProxy) StartUrl() []string {
 	}
 }
 
-func (s *openProxy) Protocol() string {
-	return "Fetch"
+func (s *openProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *openProxy) Cron() string {

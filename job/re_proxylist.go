@@ -17,8 +17,12 @@ func (s *proxylist) StartUrl() []string {
 	}
 }
 
-func (s *proxylist) Protocol() string {
-	return "GET"
+func (s *proxylist) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxylist) GetReferer() string {

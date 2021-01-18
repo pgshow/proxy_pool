@@ -15,8 +15,12 @@ func (s *pubProxy) StartUrl() []string {
 	}
 }
 
-func (s *pubProxy) Protocol() string {
-	return "GET"
+func (s *pubProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *pubProxy) GetReferer() string {

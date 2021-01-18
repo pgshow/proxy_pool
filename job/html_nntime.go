@@ -20,8 +20,12 @@ func (s *nntime) StartUrl() []string {
 	}
 }
 
-func (s *nntime) Protocol() string {
-	return "GET"
+func (s *nntime) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *nntime) GetReferer() string {

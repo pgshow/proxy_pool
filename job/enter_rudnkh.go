@@ -16,8 +16,12 @@ func (s *rudnkh) StartUrl() []string {
 	}
 }
 
-func (s *rudnkh) Protocol() string {
-	return "GET"
+func (s *rudnkh) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *rudnkh) GetReferer() string {

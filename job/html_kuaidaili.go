@@ -17,8 +17,12 @@ func (s *kuaiProxy) StartUrl() []string {
 	}
 }
 
-func (s *kuaiProxy) Protocol() string {
-	return "GET"
+func (s *kuaiProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   true,
+	}
 }
 
 func (s *kuaiProxy) Cron() string {

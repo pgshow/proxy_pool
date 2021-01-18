@@ -21,8 +21,12 @@ func (s *proxyDb) StartUrl() []string {
 	}
 }
 
-func (s *proxyDb) Protocol() string {
-	return "GET"
+func (s *proxyDb) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *proxyDb) Cron() string {

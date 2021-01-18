@@ -16,8 +16,12 @@ func (s *onlineProxy) StartUrl() []string {
 	}
 }
 
-func (s *onlineProxy) Protocol() string {
-	return "Fetch"
+func (s *onlineProxy) Profile() *Setting {
+	return &Setting{
+		Protocol:    "Fetch",
+		AlwaysProxy: false,
+		CnWebsite:   false,
+	}
 }
 
 func (s *onlineProxy) Cron() string {
