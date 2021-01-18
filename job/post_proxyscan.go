@@ -3,8 +3,8 @@ package job
 import (
 	"errors"
 	"github.com/phpgao/proxy_pool/model"
+	"gitlab.com/NebulousLabs/fastrand"
 	"io/ioutil"
-	"math/rand"
 	"net/http"
 	"regexp"
 	"strings"
@@ -17,7 +17,7 @@ type proxyScan struct {
 
 func (s *proxyScan) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
 	// 设置 Post 参数

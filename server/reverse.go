@@ -7,8 +7,8 @@ import (
 	"github.com/phpgao/proxy_pool/cache"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
+	"gitlab.com/NebulousLabs/fastrand"
 	"io"
-	"math/rand"
 	"net"
 	"net/http"
 	"net/url"
@@ -38,8 +38,7 @@ func handleTunneling(w http.ResponseWriter, r *http.Request) {
 
 	} else {
 		l := len(proxies)
-		rand.Seed(time.Now().UnixNano())
-		proxy := proxies[rand.Intn(l)]
+		proxy := proxies[fastrand.Intn(l)]
 		logger.WithField("proxy", proxy.GetProxyWithSchema()).Debug("dynamic https")
 		msg := fmt.Sprintf(model.ConnectCommand, http.MethodConnect, r.Host, "HTTP/1.1", r.Host)
 
@@ -102,7 +101,7 @@ func handleHTTP(w http.ResponseWriter, req *http.Request) {
 		logger.Debug("serve as a http proxy")
 		Transport = http.DefaultTransport
 	} else {
-		proxy := proxies[rand.Intn(len(proxies))]
+		proxy := proxies[fastrand.Intn(len(proxies))]
 		logger.WithField("proxy", proxy.GetProxyWithSchema()).Debug("dynamic http")
 		Transport = &http.Transport{
 			Proxy: http.ProxyURL(&url.URL{

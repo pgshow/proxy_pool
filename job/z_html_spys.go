@@ -8,7 +8,7 @@ import (
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
 	"github.com/robertkrimen/otto"
-	"math/rand"
+	"gitlab.com/NebulousLabs/fastrand"
 	"regexp"
 	"strings"
 	"time"
@@ -53,7 +53,7 @@ func (s *spys) Run() {
 func (s *spys) Fetch(siteUrl string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(5)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(5)) * time.Second)
 	}
 
 	request := gorequest.New()

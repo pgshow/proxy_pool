@@ -7,7 +7,7 @@ import (
 	"github.com/chromedp/chromedp"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
-	"math/rand"
+	"gitlab.com/NebulousLabs/fastrand"
 	"strings"
 	"time"
 )
@@ -18,7 +18,7 @@ type zdy struct {
 
 func (s *zdy) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
 	ws, err := util.GetWsFromChrome(util.ServerConf.ChromeWS)

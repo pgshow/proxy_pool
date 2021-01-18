@@ -5,7 +5,7 @@ import (
 	"github.com/go-redis/redis/v7"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
-	"math/rand"
+	"gitlab.com/NebulousLabs/fastrand"
 	"strconv"
 	"strings"
 	"sync"
@@ -280,8 +280,7 @@ func (r *redisDB) Random() (p model.HttpProxy, err error) {
 		err = errors.New("no proxy")
 		return
 	}
-	//rand.Seed(time.Now().Unix())
-	key := keys[rand.Intn(len(keys))]
+	key := keys[fastrand.Intn(len(keys))]
 	proxy := r.client.HGetAll(key).Val()
 	//logger.WithField("proxy", proxy).Info("get all proxy")
 	newProxy, err := model.Make(proxy)

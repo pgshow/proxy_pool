@@ -6,6 +6,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
+	"gitlab.com/NebulousLabs/fastrand"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -19,7 +20,7 @@ type openProxy struct {
 func (s *openProxy) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 	// 第一次爬取网站的随机目录名称
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
 	request := gorequest.New()

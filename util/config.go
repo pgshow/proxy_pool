@@ -18,7 +18,7 @@ type Config struct {
 	Auth                string `default:""`           //redis 密码
 	PrefixKey           string `default:"proxy_pool"` //默认前缀
 	NewQueue            int    `default:"200"`        //验证新代理队列
-	OldQueue            int    `default:"100"`        //验证旧代理队列
+	OldQueue            int    `default:"300"`        //验证旧代理队列
 	Debug               bool   `default:"false"`      //调试模式
 	DumpHttp            bool   `default:"false"`      //调试http
 	CheckInterval       int    `default:"60"`         //检查代理间隔
@@ -26,7 +26,7 @@ type Config struct {
 	Score               int    `default:"60"`         //新代理默认分数
 	Retry               int    `default:"4"`          //获取代理重试次数
 	Limit               int    `default:"1000"`       //get接口默认返回limit
-	Timeout             int    `default:"20"`         //爬虫默认超时
+	Timeout             int    `default:"15"`         //爬虫默认超时
 	TcpTimeout          int    `default:"4"`          //tcp池的默认超时时间
 	TcpTestTimeOut      int    `default:"4"`          //tcp测试的超时时间
 	ProxyTimeout        int    `default:"4"`          //测试Connect方法超时时间
@@ -41,7 +41,7 @@ type Config struct {
 	ScoreAtLeast        int    `default:"60"`         //随机选择的最小分数
 	MaxProxy            int    `default:"2000"`       //最大代理个数
 	MaxRetry            int    `default:"3"`          //最大代理个数
-	ProxyCacheTimeOut   int    `default:"30"`         //代理缓存失效时间
+	ProxyCacheTimeOut   int    `default:"60"`         //代理缓存失效时间
 	EnableApi           bool   `default:"true"`       //启动API服务
 	EnableProxy         bool   `default:"true"`       //启动动态代理服务
 	ChromeWS            string `default:""`           //chrome's rdp ws url

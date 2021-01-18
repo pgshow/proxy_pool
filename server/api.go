@@ -6,10 +6,9 @@ import (
 	"github.com/phpgao/proxy_pool/job"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
-	"math/rand"
+	"gitlab.com/NebulousLabs/fastrand"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 var (
@@ -160,8 +159,7 @@ func handlerRandom(c *gin.Context) {
 		return
 
 	}
-	rand.Seed(time.Now().UnixNano())
-	resp.Data = proxies[rand.Intn(len(proxies))]
+	resp.Data = proxies[fastrand.Intn(len(proxies))]
 	resp.Total = len(proxies)
 
 	c.JSON(http.StatusOK, resp)
@@ -179,7 +177,7 @@ func handlerRandomText(c *gin.Context) {
 		return
 	}
 
-	c.String(http.StatusOK, proxies[rand.Intn(len(proxies))].GetProxyUrl())
+	c.String(http.StatusOK, proxies[fastrand.Intn(len(proxies))].GetProxyUrl())
 }
 
 func Filter(c *gin.Context) (proxies []model.HttpProxy, err error) {
