@@ -3,10 +3,7 @@ package job
 import (
 	"fmt"
 	"github.com/antchfx/htmlquery"
-	"github.com/apex/log"
-	"github.com/parnurzeal/gorequest"
 	"github.com/phpgao/proxy_pool/model"
-	"github.com/phpgao/proxy_pool/util"
 	"github.com/robertkrimen/otto"
 	"gitlab.com/NebulousLabs/fastrand"
 	"regexp"
@@ -50,44 +47,15 @@ func (s *spys) Run() {
 	getProxy(s)
 }
 
-func (s *spys) Fetch(siteUrl string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
+func (s *spys) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 
 	if s.RandomDelay() {
-		time.Sleep(time.Duration(fastrand.Intn(5)) * time.Second)
+		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
-	request := gorequest.New()
-	var superAgent *gorequest.SuperAgent
-	var resp gorequest.Response
-	var errs []error
-	superAgent = request.Post(siteUrl).
-		Set("User-Agent", util.GetRandomUA()).
-		Set("Content-Type", `text/html; charset=utf-8`).
-		Set("Referer", s.GetReferer()).
-		Set("Pragma", `no-cache`).
-		Send("xpp=2&xf1=1&xf2=0&xf4=0&xf5=1").
-		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
+	body, spiderProxy, err = FetchPost(proxyURL, useProxy, &s.Spider, c,
+		"xpp=2&xf1=1&xf2=0&xf4=0&xf5=1")
 
-	if useProxy {
-		var proxy model.HttpProxy
-		proxy, err = storeEngine.Random()
-		if err != nil {
-			return
-		}
-		p := fmt.Sprintf("http://%s:%s", proxy.Ip, proxy.Port)
-		logger.WithFields(log.Fields{
-			"proxy": p,
-			"url":   siteUrl,
-		}).Debug("with proxy")
-		resp, body, errs = superAgent.Proxy(p).End()
-	} else {
-		resp, body, errs = superAgent.End()
-	}
-	if err = s.errAndStatus(errs, resp); err != nil {
-		return
-	}
-
-	body = strings.TrimSpace(body)
 	return
 }
 

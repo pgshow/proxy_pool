@@ -6,23 +6,19 @@ import (
 	"strings"
 )
 
-type ip3366 struct {
+type yip7 struct {
 	Spider
 }
 
-func (s *ip3366) StartUrl() []string {
+func (s *yip7) StartUrl() []string {
 	return []string{
-		"http://www.ip3366.net/free/?stype=1",
-		"http://www.ip3366.net/free/?stype=1&page=2",
-		"http://www.ip3366.net/free/?stype=2",
-		"http://www.ip3366.net/free/?stype=2&page=2",
-		"http://proxy.ip3366.net/free/?action=china&page=1",
-		"http://proxy.ip3366.net/free/?action=china&page=2",
-		"http://proxy.ip3366.net/free/?action=china&page=3",
+		"https://www.7yip.cn/free/?action=china&page=1",
+		"https://www.7yip.cn/free/?action=china&page=2",
+		"https://www.7yip.cn/free/?action=china&page=3",
 	}
 }
 
-func (s *ip3366) Profile() *Setting {
+func (s *yip7) Profile() *Setting {
 	return &Setting{
 		Protocol:    "Fetch",
 		AlwaysProxy: false,
@@ -30,23 +26,23 @@ func (s *ip3366) Profile() *Setting {
 	}
 }
 
-func (s *ip3366) Cron() string {
+func (s *yip7) Cron() string {
 	return "@every 30m"
 }
 
-func (s *ip3366) GetReferer() string {
-	return "http://www.ip3366.net"
+func (s *yip7) GetReferer() string {
+	return "https://www.7yip.cn"
 }
 
-func (s *ip3366) Run() {
+func (s *yip7) Run() {
 	getProxy(s)
 }
 
-func (s *ip3366) Name() string {
-	return "ip3366"
+func (s *yip7) Name() string {
+	return "yip7"
 }
 
-func (s *ip3366) Parse(body string) (proxies []*model.HttpProxy, err error) {
+func (s *yip7) Parse(body string) (proxies []*model.HttpProxy, err error) {
 	doc, err := htmlquery.Parse(strings.NewReader(body))
 	if err != nil {
 		return

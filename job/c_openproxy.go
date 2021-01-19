@@ -3,7 +3,6 @@ package job
 import (
 	"errors"
 	"fmt"
-	"github.com/parnurzeal/gorequest"
 	"github.com/phpgao/proxy_pool/model"
 	"github.com/phpgao/proxy_pool/util"
 	"gitlab.com/NebulousLabs/fastrand"
@@ -23,31 +22,9 @@ func (s *openProxy) Fetch(proxyURL string, useProxy bool, c Crawler) (body strin
 		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
-	request := gorequest.New()
-	contentType := "text/html; charset=utf-8"
-	var superAgent *gorequest.SuperAgent
-	var resp gorequest.Response
-	var errs []error
-	superAgent = request.Get(proxyURL).
-		Set("User-Agent", util.GetRandomUA()).
-		Set("Content-Type", contentType).
-		Set("Referer", s.GetReferer()).
-		Set("Pragma", `no-cache`).
-		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
+	body, spiderProxy, err = FetchGet(proxyURL, useProxy, &s.Spider, c)
 
-	if useProxy {
-		var proxy model.HttpProxy
-		proxy, err = storeEngine.Random()
-		if err != nil {
-			return
-		}
-		p := fmt.Sprintf("http://%s:%s", proxy.Ip, proxy.Port)
-		logger.WithField("proxy", p).Debug("with proxy")
-		resp, body, errs = superAgent.Proxy(p).End()
-	} else {
-		resp, body, errs = superAgent.End()
-	}
-	if err = s.errAndStatus(errs, resp); err != nil {
+	if err != nil {
 		return
 	}
 
@@ -65,28 +42,7 @@ func (s *openProxy) Fetch(proxyURL string, useProxy bool, c Crawler) (body strin
 		time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 	}
 
-	superAgent = request.Get(pageUrl).
-		Set("User-Agent", util.GetRandomUA()).
-		Set("Content-Type", contentType).
-		Set("Referer", s.GetReferer()).
-		Set("Pragma", `no-cache`).
-		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
-
-	if useProxy {
-		var proxy model.HttpProxy
-		proxy, err = storeEngine.Random()
-		if err != nil {
-			return
-		}
-		p := fmt.Sprintf("http://%s:%s", proxy.Ip, proxy.Port)
-		logger.WithField("proxy", p).Debug("with proxy")
-		resp, body, errs = superAgent.Proxy(p).End()
-	} else {
-		resp, body, errs = superAgent.End()
-	}
-	if err = s.errAndStatus(errs, resp); err != nil {
-		return
-	}
+	body, spiderProxy, err = FetchGet(pageUrl, useProxy, &s.Spider, c)
 
 	return
 

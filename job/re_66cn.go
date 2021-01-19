@@ -22,7 +22,7 @@ func (s *cn66) StartUrl() []string {
 func (s *cn66) Profile() *Setting {
 	return &Setting{
 		Protocol:    "Fetch",
-		AlwaysProxy: false,
+		AlwaysProxy: true,
 		CnWebsite:   true,
 	}
 }

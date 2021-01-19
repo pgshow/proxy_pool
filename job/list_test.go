@@ -7,7 +7,6 @@ import (
 	"github.com/apex/log"
 	"github.com/phpgao/proxy_pool/model"
 	"io/ioutil"
-	"net"
 	"net/http"
 	"net/url"
 	"strings"
@@ -23,7 +22,7 @@ func TestGetSpiders(t *testing.T) {
 	//for _, c := range ListOfSpider {
 	//	testSpiderFetch(c)
 	//}
-	testSpider := &xiladaili{}
+	testSpider := &hideMy{}
 	testSpiderFetch(testSpider)
 }
 
@@ -54,17 +53,13 @@ func testSpiderFetch(c Crawler) {
 // 自定义同时检测TCP和http运作情况的函数
 func QuickTest(p *model.HttpProxy) (err error) {
 	// 先检测tcp
-	conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%s", p.Ip, p.Port), 5)
+	err = p.SynTcpTest()
 	if err != nil {
+		logger.WithError(err).WithField("proxy", p.GetProxyUrl()).Debug("error test syn tcp")
 		return
 	}
-	defer func() {
-		if conn != nil {
-			_ = conn.Close()
-		}
-	}()
 
-	print("成功")
+	print("test syn tcp 成功")
 
 	// http代理检测
 	client := &http.Client{

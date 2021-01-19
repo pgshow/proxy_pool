@@ -41,7 +41,7 @@ type Crawler interface {
 	Enabled() bool
 	// url , if use proxy
 	Fetch(string, bool, Crawler) (string, string, error)
-	SplashFetch(string) (string, error) // 使用 Splash 打开并渲染网页
+	SplashFetch(string, bool, Crawler) (string, string, error) // 使用 Splash 打开并渲染网页
 	SetProxyChan(chan<- *model.HttpProxy)
 	GetProxyChan() chan<- *model.HttpProxy
 	Parse(string) ([]*model.HttpProxy, error)
@@ -124,57 +124,7 @@ func (s *Spider) Fetch(proxyURL string, useProxy bool, c Crawler) (body string, 
 		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
-	request := gorequest.New()
-	contentType := "text/html; charset=utf-8"
-	var superAgent *gorequest.SuperAgent
-	var resp gorequest.Response
-	var errs []error
-	superAgent = request.Get(proxyURL).
-		Set("User-Agent", util.GetRandomUA()).
-		Set("Content-Type", contentType).
-		Set("Referer", s.GetReferer()).
-		Set("Pragma", `no-cache`).
-		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
-
-	if useProxy {
-		//var proxy model.HttpProxy
-		//proxy, err = storeEngine.Random()
-
-		// 根据条件提取一个代理给爬虫用
-		filter := map[string]string{
-			"schema":  "http",
-			"score":   "60",
-			"country": "-cn", // 国外的网站别使用中国代理
-			"limit":   "1000",
-		}
-		if strings.HasPrefix(c.StartUrl()[0], "https") {
-			filter["schema"] = "https"
-		}
-		if c.Profile().CnWebsite {
-			filter["country"] = "cn" // 中国的网站使用中国代理
-		}
-
-		var list []model.HttpProxy
-		list, err = storeEngine.Get(filter)
-
-		if err != nil || list == nil {
-			return
-		}
-
-		randP := list[fastrand.Intn(len(list))]
-
-		spiderProxy = fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
-
-		logger.WithField("proxy", spiderProxy).Debug(c.Name() + " with proxy")
-		resp, body, errs = superAgent.Proxy(spiderProxy).End()
-	} else {
-		resp, body, errs = superAgent.End()
-	}
-	if err = s.errAndStatus(errs, resp); err != nil {
-		return
-	}
-
-	body = strings.TrimSpace(body)
+	body, spiderProxy, err = FetchGet(proxyURL, useProxy, s, c)
 	return
 }
 
@@ -219,7 +169,7 @@ func getProxy(s Crawler) {
 
 					if s.Profile().Protocol == "RenderFetch" {
 						// 需要 浏览器渲染 的网站
-						resp, err = s.SplashFetch(proxySiteURL)
+						resp, spiderProxy, err = s.SplashFetch(proxySiteURL, withProxy, s)
 					} else {
 						// go.http 就能爬取的网站
 						resp, spiderProxy, err = s.Fetch(proxySiteURL, withProxy, s)
@@ -289,25 +239,189 @@ func getProxy(s Crawler) {
 }
 
 // 使用 Splash 爬取目标页面
-func (s *Spider) SplashFetch(proxyURL string) (body string, err error) {
+func (s *Spider) SplashFetch(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
 
 	if s.RandomDelay() {
 		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
-	// 设置 Splash 参数
-	type Post struct {
-		Url     string            `json:"url"`
-		Html    string            `json:"html"`
-		Images  string            `json:"images"`
-		Headers map[string]string `json:"headers"`
+	body, spiderProxy, err = SplashGet(proxyURL, useProxy, c)
+
+	return
+}
+
+func FetchGet(proxyURL string, useProxy bool, s *Spider, c Crawler) (body string, spiderProxy string, err error) {
+	request := gorequest.New()
+	contentType := "text/html; charset=utf-8"
+	var superAgent *gorequest.SuperAgent
+	var resp gorequest.Response
+	var errs []error
+	superAgent = request.Get(proxyURL).
+		Set("User-Agent", util.GetRandomUA()).
+		Set("Content-Type", contentType).
+		Set("Referer", s.GetReferer()).
+		Set("Pragma", `no-cache`).
+		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
+
+	if useProxy {
+		//var proxy model.HttpProxy
+		//proxy, err = storeEngine.Random()
+
+		// 根据条件提取一个代理给爬虫用
+		filter := map[string]string{
+			"schema":  "http",
+			"score":   "60",
+			"country": "-cn", // 国外的网站别使用中国代理
+			"limit":   "1000",
+		}
+		if strings.HasPrefix(c.StartUrl()[0], "https") {
+			filter["schema"] = "https"
+		}
+		if c.Profile().CnWebsite {
+			filter["country"] = "cn" // 中国的网站使用中国代理
+		}
+
+		var list []model.HttpProxy
+		list, err = storeEngine.Get(filter)
+
+		if err != nil || list == nil {
+			return
+		}
+
+		randP := list[fastrand.Intn(len(list))]
+
+		spiderProxy = fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
+
+		logger.WithField("proxy", spiderProxy).Debug(c.Name() + " with proxy")
+		resp, body, errs = superAgent.Proxy(spiderProxy).End()
+	} else {
+		resp, body, errs = superAgent.End()
+	}
+	if err = s.errAndStatus(errs, resp); err != nil {
+		return
 	}
 
-	values := &Post{
-		proxyURL,
-		"1",
-		"0",
-		map[string]string{"User-Agent": util.GetRandomUA()},
+	body = strings.TrimSpace(body)
+	return
+}
+
+func FetchPost(proxyURL string, useProxy bool, s *Spider, c Crawler, postData interface{}) (body string, spiderProxy string, err error) {
+	request := gorequest.New()
+	contentType := "text/html; charset=utf-8"
+	var superAgent *gorequest.SuperAgent
+	var resp gorequest.Response
+	var errs []error
+	superAgent = request.Post(proxyURL).
+		Set("User-Agent", util.GetRandomUA()).
+		Set("Content-Type", contentType).
+		Set("Referer", s.GetReferer()).
+		Set("Pragma", `no-cache`).
+		Timeout(time.Duration(s.TimeOut()) * time.Second).SetDebug(util.ServerConf.DumpHttp)
+
+	if useProxy {
+
+		// 根据条件提取一个代理给爬虫用
+		filter := map[string]string{
+			"schema":  "http",
+			"score":   "60",
+			"country": "-cn", // 国外的网站别使用中国代理
+			"limit":   "1000",
+		}
+		if strings.HasPrefix(c.StartUrl()[0], "https") {
+			filter["schema"] = "https"
+		}
+		if c.Profile().CnWebsite {
+			filter["country"] = "cn" // 中国的网站使用中国代理
+		}
+
+		var list []model.HttpProxy
+		list, err = storeEngine.Get(filter)
+
+		if err != nil || list == nil {
+			return
+		}
+
+		randP := list[fastrand.Intn(len(list))]
+
+		spiderProxy = fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
+
+		logger.WithField("proxy", spiderProxy).Debug(c.Name() + " with proxy")
+		resp, body, errs = superAgent.Proxy(spiderProxy).Send(postData).End()
+	} else {
+		resp, body, errs = superAgent.Send(postData).End()
+	}
+	if err = s.errAndStatus(errs, resp); err != nil {
+		return
+	}
+
+	body = strings.TrimSpace(body)
+	return
+}
+
+func SplashGet(proxyURL string, useProxy bool, c Crawler) (body string, spiderProxy string, err error) {
+
+	var values interface{}
+
+	if useProxy {
+
+		// 根据条件提取一个代理给爬虫用
+		filter := map[string]string{
+			"schema":  "http",
+			"score":   "60",
+			"country": "-cn", // 国外的网站别使用中国代理
+			"limit":   "1000",
+		}
+		if strings.HasPrefix(c.StartUrl()[0], "https") {
+			filter["schema"] = "https"
+		}
+		if c.Profile().CnWebsite {
+			filter["country"] = "cn" // 中国的网站使用中国代理
+		}
+
+		var list []model.HttpProxy
+		list, err = storeEngine.Get(filter)
+
+		if err != nil || list == nil {
+			return
+		}
+
+		randP := list[fastrand.Intn(len(list))]
+
+		spiderProxy = fmt.Sprintf("%s://%s:%s", filter["schema"], randP.Ip, randP.Port)
+
+		// 设置 Splash 参数,使用代理
+		type Post struct {
+			Url     string            `json:"url"`
+			Html    string            `json:"html"`
+			Images  string            `json:"images"`
+			Headers map[string]string `json:"headers"`
+			Proxy   string            `json:"proxy"`
+		}
+
+		values = &Post{
+			proxyURL,
+			"1",
+			"0",
+			map[string]string{"User-Agent": util.GetRandomUA()},
+			spiderProxy,
+		}
+
+		logger.WithField("proxy", spiderProxy).Debug(c.Name() + " with proxy")
+	} else {
+		// 设置 Splash 参数,不使用代理
+		type Post struct {
+			Url     string            `json:"url"`
+			Html    string            `json:"html"`
+			Images  string            `json:"images"`
+			Headers map[string]string `json:"headers"`
+		}
+
+		values = &Post{
+			proxyURL,
+			"1",
+			"0",
+			map[string]string{"User-Agent": util.GetRandomUA()},
+		}
 	}
 
 	jsonValue, _ := json.Marshal(values)

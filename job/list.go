@@ -46,7 +46,7 @@ var ListOfSpider = []Crawler{
 	&proxyIpList{},
 	&blackHat{},
 	&proxyLists{},
-	&ip3366{},
+	&yip7{},
 	&xiladaili{},
 	&nimadaili{},
 	&openProxy{},

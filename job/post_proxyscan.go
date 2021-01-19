@@ -4,8 +4,6 @@ import (
 	"errors"
 	"github.com/phpgao/proxy_pool/model"
 	"gitlab.com/NebulousLabs/fastrand"
-	"io/ioutil"
-	"net/http"
 	"regexp"
 	"strings"
 	"time"
@@ -20,24 +18,8 @@ func (s *proxyScan) Fetch(proxyURL string, useProxy bool, c Crawler) (body strin
 		time.Sleep(time.Duration(fastrand.Intn(6)) * time.Second)
 	}
 
-	// 设置 Post 参数
-	resp, err := http.Post("https://www.proxyscan.io/Home/FilterResult",
-		"application/x-www-form-urlencoded",
-		strings.NewReader("status=1&ping=&selectedType=HTTP&selectedType=HTTPS&sortPing=false&sortTime=true&sortUptime=false"))
-
-	if err != nil {
-		return
-	}
-
-	bodyByte, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		return
-	}
-
-	defer resp.Body.Close()
-
-	body = string(bodyByte)
+	body, spiderProxy, err = FetchPost(proxyURL, useProxy, &s.Spider, c,
+		"status=1&ping=&selectedType=HTTP&selectedType=HTTPS&sortPing=false&sortTime=true&sortUptime=false")
 
 	return
 }
