@@ -131,6 +131,10 @@ curl https://cip.cc -x 127.0.0.1:8089
  
  1. 接口分为统计和获取
  2. 查询支持schema=http(s)，source=spider.name，score=100，country=cn
+   - **补充说明：**
+   - http://127.0.0.1:8088/random 随机所有
+   - http://127.0.0.1:8088/random?score=60 随机不小于此分数的代理
+ 
 
 ## todo
 
